@@ -31,7 +31,7 @@ function ConfirmationContent() {
           </Button>
         </Link>
         <Link href="/products">
-          <Button className="w-full sm:w-auto bg-[#F85606] hover:bg-[#E04E05] text-white">
+          <Button className="w-full sm:w-auto bg-coral hover:bg-coral-dark text-white">
             Continue Shopping
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>

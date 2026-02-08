@@ -4,7 +4,7 @@ import { MapPin, Phone, Facebook, Twitter, Instagram } from "lucide-react";
 
 export default function TopBar() {
   return (
-    <div className="bg-[#1A1A1A] text-white text-xs py-2">
+    <div className="bg-foreground text-white text-xs py-2">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1">
@@ -18,13 +18,13 @@ export default function TopBar() {
         </div>
         <div className="flex items-center gap-3">
           <span className="mr-2">ZAR</span>
-          <a href="#" className="hover:text-[#F85606] transition-colors">
+          <a href="#" className="hover:text-coral transition-colors">
             <Facebook className="w-3.5 h-3.5" />
           </a>
-          <a href="#" className="hover:text-[#F85606] transition-colors">
+          <a href="#" className="hover:text-coral transition-colors">
             <Twitter className="w-3.5 h-3.5" />
           </a>
-          <a href="#" className="hover:text-[#F85606] transition-colors">
+          <a href="#" className="hover:text-coral transition-colors">
             <Instagram className="w-3.5 h-3.5" />
           </a>
         </div>

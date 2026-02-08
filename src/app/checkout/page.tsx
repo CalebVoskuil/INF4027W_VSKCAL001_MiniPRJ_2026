@@ -50,7 +50,7 @@ const paymentMethods = [
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card" | "paypal">("card");
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step] = useState(1);
   const router = useRouter();
   const { items, getTotalPrice, clearCart } = useCartStore();
   const { user } = useAuthStore();
@@ -68,7 +68,7 @@ export default function CheckoutPage() {
     },
   });
 
-  const onSubmit = async (data: CheckoutForm) => {
+  const onSubmit = async (_data: CheckoutForm) => {
     if (!user) return;
     setLoading(true);
 
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
           <Link href="/products">
-            <Button className="bg-[#F85606] hover:bg-[#E04E05] text-white">
+            <Button className="bg-coral hover:bg-coral-dark text-white">
               Continue Shopping
             </Button>
           </Link>
@@ -127,12 +127,12 @@ export default function CheckoutPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-[#F85606] flex items-center gap-1">
+          <Link href="/" className="hover:text-coral flex items-center gap-1">
             <Home className="w-3.5 h-3.5" />
             Home
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/cart" className="hover:text-[#F85606]">Cart</Link>
+          <Link href="/cart" className="hover:text-coral">Cart</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-gray-900 font-medium">Checkout</span>
         </nav>
@@ -148,7 +148,7 @@ export default function CheckoutPage() {
                   step > i + 1
                     ? "bg-green-500 text-white"
                     : step === i + 1
-                    ? "bg-[#F85606] text-white"
+                    ? "bg-coral text-white"
                     : "bg-gray-200 text-gray-500"
                 }`}
               >
@@ -245,11 +245,11 @@ export default function CheckoutPage() {
                       onClick={() => setPaymentMethod(method.value)}
                       className={`flex items-center gap-3 p-4 border-2 rounded-lg transition-all ${
                         paymentMethod === method.value
-                          ? "border-[#F85606] bg-[#F85606]/5"
+                          ? "border-coral bg-coral/5"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
-                      <method.icon className={`w-5 h-5 ${paymentMethod === method.value ? "text-[#F85606]" : "text-gray-500"}`} />
+                      <method.icon className={`w-5 h-5 ${paymentMethod === method.value ? "text-coral" : "text-gray-500"}`} />
                       <span className="text-sm font-medium">{method.label}</span>
                     </button>
                   ))}
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#F85606] hover:bg-[#E04E05] text-white py-6 text-lg"
+                className="w-full bg-coral hover:bg-coral-dark text-white py-6 text-lg"
               >
                 {loading ? "Processing..." : "Place Order"}
               </Button>
@@ -276,7 +276,7 @@ export default function CheckoutPage() {
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {items.map((item) => (
                   <div key={item.product.id} className="flex gap-3">
-                    <div className="relative w-14 h-14 bg-gray-50 rounded flex-shrink-0">
+                    <div className="relative w-14 h-14 bg-gray-50 rounded shrink-0">
                       {item.product.images?.[0] ? (
                         <Image
                           src={item.product.images[0]}
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
               <Separator className="my-4" />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-[#F85606]">
+                <span className="text-coral">
                   R{formatPrice(getTotalPrice())}
                 </span>
               </div>

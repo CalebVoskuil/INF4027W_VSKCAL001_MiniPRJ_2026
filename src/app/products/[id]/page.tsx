@@ -87,7 +87,7 @@ export default function ProductDetailPage() {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Product Not Found</h2>
-        <Link href="/products" className="text-[#F85606] hover:underline">
+        <Link href="/products" className="text-coral hover:underline">
           Back to Products
         </Link>
       </div>
@@ -131,12 +131,12 @@ export default function ProductDetailPage() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-[#F85606] flex items-center gap-1">
+        <Link href="/" className="hover:text-coral flex items-center gap-1">
           <Home className="w-3.5 h-3.5" />
           Home
         </Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <Link href="/products" className="hover:text-[#F85606]">
+        <Link href="/products" className="hover:text-coral">
           Products
         </Link>
         <ChevronRight className="w-3.5 h-3.5" />
@@ -172,7 +172,7 @@ export default function ProductDetailPage() {
                   onClick={() => setSelectedImage(i)}
                   className={`relative w-16 h-16 border-2 rounded-lg overflow-hidden ${
                     selectedImage === i
-                      ? "border-[#F85606]"
+                      ? "border-coral"
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
           <p className="text-sm text-gray-500 mb-4">Brand: {product.brand}</p>
 
-          <p className="text-3xl font-bold text-[#F85606] mb-6">
+          <p className="text-3xl font-bold text-coral mb-6">
             R{formatPrice(product.price)}
           </p>
 
@@ -247,7 +247,7 @@ export default function ProductDetailPage() {
           <div className="flex gap-3">
             <Button
               onClick={handleAddToCart}
-              className="flex-1 bg-[#F85606] hover:bg-[#E04E05] text-white"
+              className="flex-1 bg-coral hover:bg-coral-dark text-white"
               size="lg"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
@@ -257,7 +257,7 @@ export default function ProductDetailPage() {
               onClick={handleWishlistToggle}
               variant="outline"
               size="lg"
-              className={inWishlist ? "text-[#F85606] border-[#F85606]" : ""}
+              className={inWishlist ? "text-coral border-coral" : ""}
             >
               <Heart
                 className={`w-5 h-5 ${inWishlist ? "fill-current" : ""}`}
@@ -268,15 +268,15 @@ export default function ProductDetailPage() {
           {/* Trust Badges */}
           <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t">
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Truck className="w-5 h-5 text-[#F85606]" />
+              <Truck className="w-5 h-5 text-coral" />
               <span>Free Shipping</span>
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Shield className="w-5 h-5 text-[#F85606]" />
+              <Shield className="w-5 h-5 text-coral" />
               <span>Guaranteed</span>
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-600">
-              <RotateCcw className="w-5 h-5 text-[#F85606]" />
+              <RotateCcw className="w-5 h-5 text-coral" />
               <span>Easy Returns</span>
             </div>
           </div>

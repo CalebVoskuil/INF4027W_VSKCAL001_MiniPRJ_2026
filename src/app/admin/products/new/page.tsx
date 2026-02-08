@@ -233,6 +233,7 @@ export default function NewProductPage() {
           <div className="flex flex-wrap gap-4 mb-4">
             {imageFiles.map((file, i) => (
               <div key={i} className="relative w-24 h-24 border rounded-lg overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Upload ${i}`}
@@ -247,7 +248,7 @@ export default function NewProductPage() {
                 </button>
               </div>
             ))}
-            <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-[#F85606]">
+            <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-coral">
               <Upload className="w-5 h-5 text-gray-400 mb-1" />
               <span className="text-xs text-gray-400">Upload</span>
               <input
@@ -264,7 +265,7 @@ export default function NewProductPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#F85606] hover:bg-[#E04E05] text-white py-6"
+          className="w-full bg-coral hover:bg-coral-dark text-white py-6"
         >
           {loading ? "Creating..." : "Create Product"}
         </Button>

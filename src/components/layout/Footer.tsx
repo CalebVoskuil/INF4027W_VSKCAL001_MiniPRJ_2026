@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1A1A1A] text-gray-300">
+    <footer className="bg-foreground text-gray-300">
       {/* Newsletter */}
       <div className="border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -25,7 +25,7 @@ export default function Footer() {
               placeholder="Enter your email address..."
               className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 min-w-[250px]"
             />
-            <Button className="bg-[#F85606] hover:bg-[#E04E05] text-white flex-shrink-0">
+            <Button className="bg-coral hover:bg-coral-dark text-white shrink-0">
               Subscribe
             </Button>
           </div>
@@ -39,15 +39,15 @@ export default function Footer() {
           <h4 className="text-white font-semibold mb-4">Contact Us</h4>
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
               University of Cape Town, Rondebosch, Cape Town, 7700
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4 flex-shrink-0" />
+              <Phone className="w-4 h-4 shrink-0" />
               +27 21 650 2100
             </li>
             <li className="flex items-center gap-2">
-              <Mail className="w-4 h-4 flex-shrink-0" />
+              <Mail className="w-4 h-4 shrink-0" />
               info@technest.co.za
             </li>
           </ul>
@@ -58,17 +58,17 @@ export default function Footer() {
           <h4 className="text-white font-semibold mb-4">Categories</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/products?category=flagship" className="hover:text-[#F85606] transition-colors">
+              <Link href="/products?category=flagship" className="hover:text-coral transition-colors">
                 Flagship Phones
               </Link>
             </li>
             <li>
-              <Link href="/products?category=midrange" className="hover:text-[#F85606] transition-colors">
+              <Link href="/products?category=midrange" className="hover:text-coral transition-colors">
                 Mid-Range Phones
               </Link>
             </li>
             <li>
-              <Link href="/products?category=budget" className="hover:text-[#F85606] transition-colors">
+              <Link href="/products?category=budget" className="hover:text-coral transition-colors">
                 Budget Phones
               </Link>
             </li>
@@ -80,22 +80,22 @@ export default function Footer() {
           <h4 className="text-white font-semibold mb-4">Quick Links</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/products" className="hover:text-[#F85606] transition-colors">
+              <Link href="/products" className="hover:text-coral transition-colors">
                 Shop All
               </Link>
             </li>
             <li>
-              <Link href="/cart" className="hover:text-[#F85606] transition-colors">
+              <Link href="/cart" className="hover:text-coral transition-colors">
                 Cart
               </Link>
             </li>
             <li>
-              <Link href="/login" className="hover:text-[#F85606] transition-colors">
+              <Link href="/login" className="hover:text-coral transition-colors">
                 My Account
               </Link>
             </li>
             <li>
-              <Link href="/orders" className="hover:text-[#F85606] transition-colors">
+              <Link href="/orders" className="hover:text-coral transition-colors">
                 Order Tracking
               </Link>
             </li>

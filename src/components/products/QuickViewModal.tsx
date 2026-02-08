@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ShoppingCart, Heart, Smartphone, X } from "lucide-react";
+import { ShoppingCart, Heart, Smartphone } from "lucide-react";
 import { formatPrice } from "@/lib/utils/format";
 import {
   Dialog,
@@ -77,7 +77,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
               <span className="text-sm text-gray-500">{product.brand}</span>
             </div>
 
-            <p className="text-3xl font-bold text-[#F85606] mb-4">
+            <p className="text-3xl font-bold text-coral mb-4">
               R{formatPrice(product.price)}
             </p>
 
@@ -87,7 +87,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             <div className="space-y-2">
               {specRows.map((row) => (
                 <div key={row.label} className="flex text-sm">
-                  <span className="w-24 text-gray-500 flex-shrink-0">
+                  <span className="w-24 text-gray-500 shrink-0">
                     {row.label}
                   </span>
                   <span className="font-medium">{row.value}</span>
@@ -116,7 +116,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             <div className="flex gap-2">
               <Button
                 onClick={handleAddToCart}
-                className="flex-1 bg-[#F85606] hover:bg-[#E04E05] text-white"
+                className="flex-1 bg-coral hover:bg-coral-dark text-white"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Add to Cart

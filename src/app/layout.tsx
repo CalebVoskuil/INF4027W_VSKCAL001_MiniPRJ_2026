@@ -7,6 +7,7 @@ import Navbar from "@/components/layout/Navbar";
 import NavLinks from "@/components/layout/NavLinks";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster position="top-right" richColors />
+          <SpeedInsights />
         </AuthProvider>
       </body>
     </html>

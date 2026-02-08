@@ -8,7 +8,6 @@ import { User, Save, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import AuthGuard from "@/components/layout/AuthGuard";
 import { useAuthStore } from "@/store/authStore";
 import { updateUserProfile } from "@/lib/firebase/firestore";
@@ -94,8 +93,8 @@ export default function ProfilePage() {
     <AuthGuard>
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-[#F85606]/10 rounded-lg">
-            <User className="w-6 h-6 text-[#F85606]" />
+          <div className="p-2 bg-coral/10 rounded-lg">
+            <User className="w-6 h-6 text-coral" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">My Profile</h1>
@@ -136,7 +135,7 @@ export default function ProfilePage() {
             <Button
               type="submit"
               disabled={saving}
-              className="bg-[#F85606] hover:bg-[#E04E05] text-white"
+              className="bg-coral hover:bg-coral-dark text-white"
             >
               <Save className="w-4 h-4 mr-2" />
               {saving ? "Saving..." : "Save Changes"}

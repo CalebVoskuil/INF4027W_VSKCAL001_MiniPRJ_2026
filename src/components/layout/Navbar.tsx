@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   ShoppingCart,
   User,
@@ -33,11 +33,13 @@ export default function Navbar() {
   const getTotalPrice = useCartStore((s) => s.getTotalPrice);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Avoid hydration mismatch: cart data comes from localStorage which doesn't exist on the server
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const totalItems = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
   const totalPrice = mounted ? getTotalPrice() : 0;
@@ -58,11 +60,11 @@ export default function Navbar() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6">
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0">
+        <Link href="/" className="shrink-0">
           <h1 className="text-2xl font-bold">
-            <span className="text-[#F85606]">Tech</span>
-            <span className="text-[#1A1A1A]">Nest</span>
-            <span className="text-[#F85606]">.</span>
+            <span className="text-coral">Tech</span>
+            <span className="text-foreground">Nest</span>
+            <span className="text-coral">.</span>
           </h1>
         </Link>
 
@@ -71,7 +73,7 @@ export default function Navbar() {
           onSubmit={handleSearch}
           className="flex-1 max-w-2xl flex items-center"
         >
-          <div className="flex w-full border border-gray-300 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-[#F85606] focus-within:border-[#F85606]">
+          <div className="flex w-full border border-gray-300 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-coral focus-within:border-coral">
             <input
               type="text"
               placeholder="Search with AI... (e.g. 'Android phone under R15k with good camera')"
@@ -88,7 +90,7 @@ export default function Navbar() {
             </Link>
             <button
               type="submit"
-              className="px-4 bg-[#F85606] text-white hover:bg-[#E04E05] transition-colors"
+              className="px-4 bg-coral text-white hover:bg-coral-dark transition-colors"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -98,12 +100,12 @@ export default function Navbar() {
         {/* Cart */}
         <Link
           href="/cart"
-          className="flex items-center gap-2 hover:text-[#F85606] transition-colors"
+          className="flex items-center gap-2 hover:text-coral transition-colors"
         >
           <div className="relative">
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-[#F85606] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-coral text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -122,7 +124,7 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 hover:text-[#F85606]"
+                className="flex items-center gap-2 hover:text-coral"
               >
                 <User className="w-5 h-5" />
                 <div className="hidden sm:block text-left text-sm">
@@ -166,7 +168,7 @@ export default function Navbar() {
         ) : (
           <Link
             href="/login"
-            className="flex items-center gap-2 hover:text-[#F85606] transition-colors"
+            className="flex items-center gap-2 hover:text-coral transition-colors"
           >
             <User className="w-5 h-5" />
             <div className="hidden sm:block text-sm">

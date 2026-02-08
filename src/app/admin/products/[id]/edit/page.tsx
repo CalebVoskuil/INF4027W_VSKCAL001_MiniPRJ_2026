@@ -53,7 +53,7 @@ export default function EditProductPage() {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { },
   } = useForm<ProductForm>({
     resolver: zodResolver(productSchema),
   });
@@ -208,7 +208,7 @@ export default function EditProductPage() {
         <Button
           type="submit"
           disabled={saving}
-          className="w-full bg-[#F85606] hover:bg-[#E04E05] text-white py-6"
+          className="w-full bg-coral hover:bg-coral-dark text-white py-6"
         >
           {saving ? "Saving..." : "Update Product"}
         </Button>

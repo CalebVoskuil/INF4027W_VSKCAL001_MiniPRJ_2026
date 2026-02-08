@@ -14,8 +14,6 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
-  LineChart,
-  Line,
 } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -136,7 +134,7 @@ export default function ReportsPage() {
   const topCustomers = Object.entries(customerOrderMap)
     .sort(([, a], [, b]) => b.total - a.total)
     .slice(0, 10)
-    .map(([id, data]) => ({
+    .map(([_id, data]) => ({
       email: data.email.length > 25 ? data.email.slice(0, 25) + "..." : data.email,
       totalSpent: data.total,
       orders: data.count,
@@ -287,7 +285,7 @@ export default function ReportsPage() {
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-gray-500">Avg Order Value</p>
-                <p className="text-2xl font-bold text-[#F85606]">R{formatPrice(Math.round(avgOrderValue))}</p>
+                <p className="text-2xl font-bold text-coral">R{formatPrice(Math.round(avgOrderValue))}</p>
               </CardContent>
             </Card>
             <Card>
@@ -309,7 +307,7 @@ export default function ReportsPage() {
                     {topCustomers.map((c, i) => (
                       <div key={i} className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-3">
-                          <span className="w-6 h-6 bg-[#F85606] text-white rounded-full text-xs flex items-center justify-center font-bold">
+                          <span className="w-6 h-6 bg-coral text-white rounded-full text-xs flex items-center justify-center font-bold">
                             {i + 1}
                           </span>
                           <div>

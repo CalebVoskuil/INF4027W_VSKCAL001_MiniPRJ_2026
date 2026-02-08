@@ -68,7 +68,7 @@ function ProductsContent() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-[#F85606] flex items-center gap-1">
+        <Link href="/" className="hover:text-coral flex items-center gap-1">
           <Home className="w-3.5 h-3.5" />
           Home
         </Link>
@@ -88,7 +88,7 @@ function ProductsContent() {
 
       <div className="flex gap-6">
         {/* Desktop Filter Sidebar */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
+        <aside className="hidden lg:block w-64 shrink-0">
           <div className="sticky top-32 bg-white border border-gray-200 rounded-lg p-4">
             <FilterSidebar />
           </div>

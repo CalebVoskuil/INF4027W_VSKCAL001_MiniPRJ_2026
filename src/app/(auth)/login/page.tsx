@@ -117,7 +117,7 @@ export default function LoginPage() {
               </label>
               <Link
                 href="/login"
-                className="text-[#F85606] hover:underline"
+                className="text-coral hover:underline"
               >
                 Forgot password?
               </Link>
@@ -126,7 +126,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#F85606] hover:bg-[#E04E05] text-white"
+              className="w-full bg-coral hover:bg-coral-dark text-white"
             >
               {loading ? "Signing in..." : "Sign In"}
             </Button>
@@ -136,7 +136,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
             <Link
               href="/signup"
-              className="text-[#F85606] font-semibold hover:underline"
+              className="text-coral font-semibold hover:underline"
             >
               Register
             </Link>

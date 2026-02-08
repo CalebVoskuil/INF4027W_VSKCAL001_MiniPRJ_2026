@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/utils/format";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,

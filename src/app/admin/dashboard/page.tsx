@@ -6,12 +6,11 @@ import {
   ShoppingBag,
   Package,
   Users,
-  TrendingUp,
 } from "lucide-react";
 import { formatPrice } from "@/lib/utils/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProducts, getOrders, getAllUsers } from "@/lib/firebase/firestore";
-import { Product, Order, AppUser } from "@/types";
+import { Order } from "@/types";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({

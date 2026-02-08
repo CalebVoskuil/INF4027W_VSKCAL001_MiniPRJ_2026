@@ -98,7 +98,7 @@ export default function AdminCategoriesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Categories</h1>
-        <Button onClick={openCreate} className="bg-[#F85606] hover:bg-[#E04E05] text-white">
+        <Button onClick={openCreate} className="bg-coral hover:bg-coral-dark text-white">
           <Plus className="w-4 h-4 mr-2" />
           Add Category
         </Button>
@@ -154,7 +154,7 @@ export default function AdminCategoriesPage() {
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave} className="bg-[#F85606] hover:bg-[#E04E05] text-white">Save</Button>
+            <Button onClick={handleSave} className="bg-coral hover:bg-coral-dark text-white">Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

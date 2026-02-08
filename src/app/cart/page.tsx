@@ -31,7 +31,7 @@ export default function CartPage() {
           Looks like you haven&apos;t added any items to your cart yet.
         </p>
         <Link href="/products">
-          <Button className="bg-[#F85606] hover:bg-[#E04E05] text-white">
+          <Button className="bg-coral hover:bg-coral-dark text-white">
             Continue Shopping
           </Button>
         </Link>
@@ -43,7 +43,7 @@ export default function CartPage() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-[#F85606] flex items-center gap-1">
+        <Link href="/" className="hover:text-coral flex items-center gap-1">
           <Home className="w-3.5 h-3.5" />
           Home
         </Link>
@@ -81,7 +81,7 @@ export default function CartPage() {
               >
                 <td className="py-4">
                   <div className="flex items-center gap-4">
-                    <div className="relative w-20 h-20 bg-gray-50 rounded-lg flex-shrink-0">
+                    <div className="relative w-20 h-20 bg-gray-50 rounded-lg shrink-0">
                       {item.product.images?.[0] ? (
                         <Image
                           src={item.product.images[0]}
@@ -98,7 +98,7 @@ export default function CartPage() {
                     <div>
                       <Link
                         href={`/products/${item.product.id}`}
-                        className="font-medium text-sm hover:text-[#F85606]"
+                        className="font-medium text-sm hover:text-coral"
                       >
                         {item.product.name}
                       </Link>
@@ -178,12 +178,12 @@ export default function CartPage() {
           <Separator className="mb-4" />
           <div className="flex justify-between mb-4">
             <span className="font-semibold">Total</span>
-            <span className="font-bold text-lg text-[#F85606]">
+            <span className="font-bold text-lg text-coral">
               R{formatPrice(getTotalPrice())}
             </span>
           </div>
           <Link href={user ? "/checkout" : "/login"}>
-            <Button className="w-full bg-[#F85606] hover:bg-[#E04E05] text-white">
+            <Button className="w-full bg-coral hover:bg-coral-dark text-white">
               {user ? "Proceed to Checkout" : "Sign in to Checkout"}
             </Button>
           </Link>

@@ -25,7 +25,7 @@ export default function NavLinks() {
   if (pathname?.startsWith("/admin")) return null;
 
   return (
-    <nav className="bg-[#F85606] text-white">
+    <nav className="bg-coral text-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-10">
           {/* Mobile menu button */}

@@ -3,19 +3,16 @@ import {
   doc,
   getDocs,
   getDoc,
-  addDoc,
   updateDoc,
   deleteDoc,
   query,
   where,
   orderBy,
-  limit,
   Timestamp,
   QueryConstraint,
   setDoc,
   increment,
   DocumentData,
-  WhereFilterOp,
 } from "firebase/firestore";
 import { db } from "./config";
 import { Product, Category, Order, AppUser, Wishlist } from "@/types";

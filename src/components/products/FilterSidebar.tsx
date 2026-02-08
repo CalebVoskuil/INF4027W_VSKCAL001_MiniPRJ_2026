@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -101,7 +101,7 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
           <SlidersHorizontal className="w-4 h-4" />
           Filters
           {activeFilterCount > 0 && (
-            <Badge className="bg-[#F85606] text-white text-xs">
+            <Badge className="bg-coral text-white text-xs">
               {activeFilterCount}
             </Badge>
           )}
@@ -111,7 +111,7 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
             variant="ghost"
             size="sm"
             onClick={clearFilters}
-            className="text-xs text-[#F85606] hover:text-[#E04E05]"
+            className="text-xs text-coral hover:text-coral-dark"
           >
             Clear All
           </Button>
@@ -209,8 +209,8 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
               }
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 selectedRam.includes(ram)
-                  ? "bg-[#F85606] text-white border-[#F85606]"
-                  : "border-gray-300 hover:border-[#F85606]"
+                  ? "bg-coral text-white border-coral"
+                  : "border-gray-300 hover:border-coral"
               }`}
             >
               {ram}
@@ -237,8 +237,8 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
               }
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 selectedStorage.includes(storage)
-                  ? "bg-[#F85606] text-white border-[#F85606]"
-                  : "border-gray-300 hover:border-[#F85606]"
+                  ? "bg-coral text-white border-coral"
+                  : "border-gray-300 hover:border-coral"
               }`}
             >
               {storage}
