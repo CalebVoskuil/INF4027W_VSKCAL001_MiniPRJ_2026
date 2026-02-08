@@ -10,6 +10,7 @@ import {
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "./config";
 import { AppUser } from "@/types";
+import { generateSalt, hashPassword, verifyPassword } from "@/lib/crypto/password";
 
 export async function signUp(
   email: string,
@@ -19,6 +20,10 @@ export async function signUp(
 ): Promise<AppUser> {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
+
+  // Generate a unique salt and hash the password before storing
+  const salt = generateSalt();
+  const hashedPassword = hashPassword(password, salt);
 
   const appUser: AppUser = {
     uid: user.uid,
@@ -30,6 +35,8 @@ export async function signUp(
       age: null,
       location: null,
     },
+    passwordHash: hashedPassword,
+    salt: salt,
     createdAt: Timestamp.now(),
     lastLoginAt: Timestamp.now(),
   };
@@ -47,6 +54,16 @@ export async function signIn(email: string, password: string): Promise<AppUser> 
     throw new Error("User data not found");
   }
 
+  const userData = userDoc.data() as AppUser;
+
+  // Verify password against the stored hash for additional security
+  if (userData.passwordHash && userData.salt) {
+    const isValid = verifyPassword(password, userData.passwordHash);
+    if (!isValid) {
+      throw new Error("Password verification failed");
+    }
+  }
+
   // Update last login
   await setDoc(
     doc(db, "users", user.uid),
@@ -54,7 +71,7 @@ export async function signIn(email: string, password: string): Promise<AppUser> 
     { merge: true }
   );
 
-  return userDoc.data() as AppUser;
+  return userData;
 }
 
 export async function signOut(): Promise<void> {
@@ -70,7 +87,18 @@ export async function getUserData(uid: string): Promise<AppUser | null> {
 export async function updateUserPassword(newPassword: string): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error("No authenticated user");
+
+  // Update the password in Firebase Auth
   await updatePassword(user, newPassword);
+
+  // Generate a new salt and re-hash the new password, then update Firestore
+  const newSalt = generateSalt();
+  const newHash = hashPassword(newPassword, newSalt);
+  await setDoc(
+    doc(db, "users", user.uid),
+    { passwordHash: newHash, salt: newSalt },
+    { merge: true }
+  );
 }
 
 export async function resetPassword(email: string): Promise<void> {

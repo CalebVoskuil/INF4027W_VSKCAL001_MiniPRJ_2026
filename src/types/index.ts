@@ -52,6 +52,8 @@ export interface AppUser {
   lastName: string;
   role: "customer" | "admin";
   demographics: UserDemographics;
+  passwordHash: string;
+  salt: string;
   createdAt: Timestamp | Date;
   lastLoginAt: Timestamp | Date;
 }
