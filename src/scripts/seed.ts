@@ -5,7 +5,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, Timestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,15 +21,6 @@ console.log("Firebase Project:", firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Helper to generate a placeholder image URL for a phone
-function phoneImg(name: string, color: string = "e8e8e8"): string[] {
-  const encoded = encodeURIComponent(name);
-  return [
-    `https://placehold.co/400x500/${color}/333?text=${encoded}`,
-    `https://placehold.co/400x500/${color}/555?text=${encoded}+Back`,
-  ];
-}
-
 const products = [
   // ===== FLAGSHIP (8 phones) =====
   {
@@ -41,7 +32,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "512GB", battery: "5000mAh", camera: "200MP + 50MP + 12MP + 10MP", display: '6.8" Dynamic AMOLED 2X', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "S Pen", "water-resistant", "wireless-charging", "AI-camera"],
-    images: phoneImg("Galaxy S24 Ultra", "1a1a2e"),
+    images: [], // TODO: add images
     stock: 15,
     views: 245,
     salesCount: 42,
@@ -55,7 +46,7 @@ const products = [
     category: "flagship",
     specs: { ram: "8GB", storage: "256GB", battery: "4422mAh", camera: "48MP + 12MP + 12MP", display: '6.7" Super Retina XDR', processor: "A17 Pro", os: "iOS 17" },
     tags: ["5G", "titanium", "action-button", "MagSafe"],
-    images: phoneImg("iPhone 15 Pro Max", "2d2d3f"),
+    images: [], // TODO: add images
     stock: 20,
     views: 312,
     salesCount: 56,
@@ -69,7 +60,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "512GB", battery: "4880mAh", camera: "50MP + 50MP + 50MP", display: '6.73" AMOLED', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "Leica-camera", "fast-charging-120W"],
-    images: phoneImg("Xiaomi 14 Pro", "ff6600"),
+    images: [], // TODO: add images
     stock: 12,
     views: 156,
     salesCount: 28,
@@ -83,7 +74,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "256GB", battery: "5050mAh", camera: "50MP + 48MP + 48MP", display: '6.7" LTPO OLED', processor: "Google Tensor G3", os: "Android 14" },
     tags: ["5G", "AI-features", "stock-android", "wireless-charging"],
-    images: phoneImg("Pixel 8 Pro", "4285f4"),
+    images: [], // TODO: add images
     stock: 10,
     views: 198,
     salesCount: 35,
@@ -97,7 +88,7 @@ const products = [
     category: "flagship",
     specs: { ram: "16GB", storage: "512GB", battery: "5400mAh", camera: "50MP + 64MP + 48MP", display: '6.82" AMOLED', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "fast-charging-100W", "Hasselblad"],
-    images: phoneImg("OnePlus 12", "e30b20"),
+    images: [], // TODO: add images
     stock: 8,
     views: 134,
     salesCount: 22,
@@ -111,7 +102,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "256GB", battery: "4900mAh", camera: "50MP + 12MP + 10MP", display: '6.7" Dynamic AMOLED 2X', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "AI-features", "water-resistant", "wireless-charging"],
-    images: phoneImg("Galaxy S24+", "1a1a2e"),
+    images: [], // TODO: add images
     stock: 14,
     views: 189,
     salesCount: 38,
@@ -125,7 +116,7 @@ const products = [
     category: "flagship",
     specs: { ram: "8GB", storage: "256GB", battery: "3274mAh", camera: "48MP + 12MP + 12MP", display: '6.1" Super Retina XDR', processor: "A17 Pro", os: "iOS 17" },
     tags: ["5G", "titanium", "action-button", "MagSafe"],
-    images: phoneImg("iPhone 15 Pro", "2d2d3f"),
+    images: ["/images/phones/iphone15profront.jpg", "/images/phones/iphone15proback.jpg"],
     stock: 18,
     views: 267,
     salesCount: 45,
@@ -139,7 +130,7 @@ const products = [
     category: "flagship",
     specs: { ram: "16GB", storage: "256GB", battery: "5060mAh", camera: "50MP + 48MP + 48MP", display: '6.3" LTPO OLED', processor: "Google Tensor G4", os: "Android 15" },
     tags: ["5G", "AI-features", "Gemini", "wireless-charging"],
-    images: phoneImg("Pixel 9 Pro", "4285f4"),
+    images: ["/images/phones/pixel9profront.jpg", "/images/phones/pixel9proback.jpg"],
     stock: 11,
     views: 210,
     salesCount: 30,
@@ -154,7 +145,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + 12MP + 5MP", display: '6.4" Super AMOLED', processor: "Exynos 1380", os: "Android 14" },
     tags: ["5G", "water-resistant", "stereo-speakers"],
-    images: phoneImg("Galaxy A54", "9b59b6"),
+    images: [], // TODO: add images
     stock: 25,
     views: 178,
     salesCount: 52,
@@ -168,7 +159,7 @@ const products = [
     category: "midrange",
     specs: { ram: "6GB", storage: "128GB", battery: "3349mAh", camera: "48MP + 12MP", display: '6.1" Super Retina XDR', processor: "A16 Bionic", os: "iOS 17" },
     tags: ["5G", "ceramic-shield", "MagSafe"],
-    images: phoneImg("iPhone 15", "5a5a72"),
+    images: [], // TODO: add images
     stock: 18,
     views: 234,
     salesCount: 48,
@@ -182,7 +173,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "5100mAh", camera: "200MP + 8MP + 2MP", display: '6.67" AMOLED', processor: "Snapdragon 7s Gen 2", os: "Android 13" },
     tags: ["5G", "fast-charging-67W", "high-res-camera"],
-    images: phoneImg("Redmi Note 13 Pro", "ff8c00"),
+    images: [], // TODO: add images
     stock: 30,
     views: 145,
     salesCount: 40,
@@ -196,7 +187,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "4400mAh", camera: "50MP + 13MP", display: '6.55" pOLED', processor: "MediaTek Dimensity 8020", os: "Android 13" },
     tags: ["5G", "wireless-charging", "water-resistant"],
-    images: phoneImg("Motorola Edge 40", "0077b6"),
+    images: [], // TODO: add images
     stock: 15,
     views: 89,
     salesCount: 18,
@@ -210,7 +201,7 @@ const products = [
     category: "midrange",
     specs: { ram: "12GB", storage: "256GB", battery: "4700mAh", camera: "50MP + 50MP", display: '6.7" LTPO AMOLED', processor: "Snapdragon 8+ Gen 1", os: "Android 13" },
     tags: ["5G", "Glyph-interface", "wireless-charging"],
-    images: phoneImg("Nothing Phone 2", "2d2d2d"),
+    images: [], // TODO: add images
     stock: 10,
     views: 167,
     salesCount: 25,
@@ -224,7 +215,7 @@ const products = [
     category: "midrange",
     specs: { ram: "6GB", storage: "128GB", battery: "5000mAh", camera: "48MP + 8MP + 5MP", display: '6.6" Super AMOLED', processor: "MediaTek Dimensity 1080", os: "Android 13" },
     tags: ["5G", "water-resistant", "long-battery"],
-    images: phoneImg("Galaxy A34", "8e44ad"),
+    images: ["/images/phones/samsunga34front.jpg", "/images/phones/samsunga34back.jpg"],
     stock: 22,
     views: 112,
     salesCount: 33,
@@ -238,7 +229,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + 8MP + 2MP", display: '6.74" AMOLED', processor: "MediaTek Dimensity 9000", os: "Android 13" },
     tags: ["5G", "fast-charging-80W", "OxygenOS"],
-    images: phoneImg("OnePlus Nord 3", "c0392b"),
+    images: ["/images/phones/nord3frotn.jpg", "/images/phones/nord3back.png"],
     stock: 16,
     views: 98,
     salesCount: 20,
@@ -252,7 +243,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "128GB", battery: "4385mAh", camera: "64MP + 13MP", display: '6.1" OLED', processor: "Google Tensor G2", os: "Android 14" },
     tags: ["5G", "stock-android", "wireless-charging"],
-    images: phoneImg("Pixel 7a", "34a853"),
+    images: [], // TODO: add images
     stock: 13,
     views: 143,
     salesCount: 27,
@@ -266,7 +257,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "4500mAh", camera: "50MP + 8MP + 2MP", display: '6.55" AMOLED', processor: "Snapdragon 7 Gen 1", os: "Android 13" },
     tags: ["5G", "fast-charging-67W", "slim-design"],
-    images: phoneImg("Xiaomi 13 Lite", "ff6f00"),
+    images: [], // TODO: add images
     stock: 19,
     views: 76,
     salesCount: 15,
@@ -281,7 +272,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 2MP + 2MP", display: '6.6" PLS LCD', processor: "MediaTek Helio G80", os: "Android 13" },
     tags: ["expandable-storage", "long-battery"],
-    images: phoneImg("Galaxy A14", "27ae60"),
+    images: [], // TODO: add images
     stock: 40,
     views: 201,
     salesCount: 65,
@@ -295,7 +286,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 8MP + 2MP", display: '6.79" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["fast-charging-18W", "large-display"],
-    images: phoneImg("Redmi 12", "f39c12"),
+    images: [], // TODO: add images
     stock: 35,
     views: 178,
     salesCount: 58,
@@ -309,7 +300,7 @@ const products = [
     category: "budget",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + 2MP", display: '6.43" AMOLED', processor: "Snapdragon 680", os: "Android 13" },
     tags: ["fast-charging-67W", "AMOLED"],
-    images: phoneImg("Oppo A78", "16a085"),
+    images: [], // TODO: add images
     stock: 22,
     views: 134,
     salesCount: 36,
@@ -323,7 +314,7 @@ const products = [
     category: "budget",
     specs: { ram: "6GB", storage: "128GB", battery: "5000mAh", camera: "64MP + 2MP", display: '6.72" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["fast-charging-33W", "high-res-camera"],
-    images: phoneImg("Realme C55", "f1c40f"),
+    images: [], // TODO: add images
     stock: 28,
     views: 98,
     salesCount: 30,
@@ -337,7 +328,7 @@ const products = [
     category: "budget",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + AI lens", display: '6.8" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["large-storage", "affordable"],
-    images: phoneImg("Tecno Spark 10 Pro", "2980b9"),
+    images: [], // TODO: add images
     stock: 45,
     views: 156,
     salesCount: 48,
@@ -351,7 +342,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 2MP + 2MP", display: '6.7" PLS LCD', processor: "Snapdragon 680", os: "Android 13" },
     tags: ["affordable", "long-battery", "expandable-storage"],
-    images: phoneImg("Galaxy A05s", "1abc9c"),
+    images: [], // TODO: add images
     stock: 50,
     views: 223,
     salesCount: 72,
@@ -365,7 +356,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 0.08MP", display: '6.74" IPS LCD', processor: "MediaTek Helio G85", os: "Android 13" },
     tags: ["affordable", "large-display"],
-    images: phoneImg("Redmi 13C", "e67e22"),
+    images: [], // TODO: add images
     stock: 38,
     views: 167,
     salesCount: 55,
@@ -379,7 +370,7 @@ const products = [
     category: "budget",
     specs: { ram: "6GB", storage: "128GB", battery: "5000mAh", camera: "64MP + 2MP", display: '6.72" IPS LCD', processor: "MediaTek Dimensity 6100+", os: "Android 13" },
     tags: ["5G", "fast-charging-33W", "affordable-5G"],
-    images: phoneImg("Realme Narzo 60x", "d35400"),
+    images: ["/images/phones/realme60xfront.jpg", "/images/phones/realme60xback.jpg"],
     stock: 25,
     views: 87,
     salesCount: 19,
@@ -392,7 +383,20 @@ const categories = [
   { name: "Flagship Phones", description: "Premium smartphones above R15,000 with cutting-edge technology", productsCount: 8 },
 ];
 
+async function clearCollection(name: string) {
+  const snapshot = await getDocs(collection(db, name));
+  const deletes = snapshot.docs.map((d) => deleteDoc(d.ref));
+  await Promise.all(deletes);
+  return snapshot.size;
+}
+
 async function seed() {
+  // Clear old data first
+  console.log("🗑️  Clearing old data...");
+  const deletedProducts = await clearCollection("products");
+  const deletedCategories = await clearCollection("categories");
+  console.log(`   Deleted ${deletedProducts} old products, ${deletedCategories} old categories\n`);
+
   console.log("🌱 Seeding products...");
   for (const product of products) {
     const docRef = doc(collection(db, "products"));
