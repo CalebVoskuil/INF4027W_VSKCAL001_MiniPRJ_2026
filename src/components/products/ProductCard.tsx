@@ -119,7 +119,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
 
         {/* Price */}
         <p className="text-lg font-bold text-[#F85606] mb-3">
-          R{product.price.toLocaleString()}
+          R{product.price.toLocaleString("en-ZA")}
         </p>
 
         {/* Specs Grid */}

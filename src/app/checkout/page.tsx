@@ -296,7 +296,7 @@ export default function CheckoutPage() {
                       <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                     </div>
                     <p className="text-sm font-semibold">
-                      R{(item.product.price * item.quantity).toLocaleString()}
+                      R{(item.product.price * item.quantity).toLocaleString("en-ZA")}
                     </p>
                   </div>
                 ))}
@@ -305,7 +305,7 @@ export default function CheckoutPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Subtotal</span>
-                  <span>R{getTotalPrice().toLocaleString()}</span>
+                  <span>R{getTotalPrice().toLocaleString("en-ZA")}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Shipping</span>
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-[#F85606]">
-                  R{getTotalPrice().toLocaleString()}
+                  R{getTotalPrice().toLocaleString("en-ZA")}
                 </span>
               </div>
             </div>

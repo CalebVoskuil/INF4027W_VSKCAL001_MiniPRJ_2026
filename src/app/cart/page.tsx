@@ -108,7 +108,7 @@ export default function CartPage() {
                   </div>
                 </td>
                 <td className="text-center py-4 text-sm">
-                  R{item.product.price.toLocaleString()}
+                  R{item.product.price.toLocaleString("en-ZA")}
                 </td>
                 <td className="text-center py-4">
                   <div className="flex items-center justify-center border border-gray-300 rounded-md w-fit mx-auto">
@@ -134,7 +134,7 @@ export default function CartPage() {
                   </div>
                 </td>
                 <td className="text-right py-4 font-semibold text-sm">
-                  R{(item.product.price * item.quantity).toLocaleString()}
+                  R{(item.product.price * item.quantity).toLocaleString("en-ZA")}
                 </td>
                 <td className="py-4">
                   <button
@@ -167,7 +167,7 @@ export default function CartPage() {
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-500">Subtotal</span>
             <span className="font-medium">
-              R{getTotalPrice().toLocaleString()}
+              R{getTotalPrice().toLocaleString("en-ZA")}
             </span>
           </div>
           <div className="flex justify-between text-sm mb-4">
@@ -178,7 +178,7 @@ export default function CartPage() {
           <div className="flex justify-between mb-4">
             <span className="font-semibold">Total</span>
             <span className="font-bold text-lg text-[#F85606]">
-              R{getTotalPrice().toLocaleString()}
+              R{getTotalPrice().toLocaleString("en-ZA")}
             </span>
           </div>
           <Link href={user ? "/checkout" : "/login"}>

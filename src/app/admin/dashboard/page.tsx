@@ -58,7 +58,7 @@ export default function AdminDashboard() {
   const statCards = [
     {
       title: "Total Revenue",
-      value: `R${stats.totalRevenue.toLocaleString()}`,
+      value: `R${stats.totalRevenue.toLocaleString("en-ZA")}`,
       icon: DollarSign,
       color: "text-green-600 bg-green-100",
     },
@@ -150,7 +150,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-gray-500">{order.userEmail}</p>
                     </div>
                     <span className="font-semibold">
-                      R{order.totalAmount.toLocaleString()}
+                      R{order.totalAmount.toLocaleString("en-ZA")}
                     </span>
                   </div>
                 ))}

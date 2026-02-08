@@ -77,7 +77,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             </div>
 
             <p className="text-3xl font-bold text-[#F85606] mb-4">
-              R{product.price.toLocaleString()}
+              R{product.price.toLocaleString("en-ZA")}
             </p>
 
             <Separator className="my-4" />

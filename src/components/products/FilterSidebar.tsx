@@ -181,11 +181,11 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
         />
         <div className="flex items-center gap-2 text-sm">
           <span className="bg-gray-100 px-2 py-1 rounded text-xs">
-            R{priceRange[0].toLocaleString()}
+            R{priceRange[0].toLocaleString("en-ZA")}
           </span>
           <span className="text-gray-400">-</span>
           <span className="bg-gray-100 px-2 py-1 rounded text-xs">
-            R{priceRange[1].toLocaleString()}
+            R{priceRange[1].toLocaleString("en-ZA")}
           </span>
         </div>
       </div>

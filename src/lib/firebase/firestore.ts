@@ -36,12 +36,13 @@ export async function getProductById(id: string): Promise<Product | null> {
 }
 
 export async function createProduct(product: Omit<Product, "id">): Promise<string> {
-  const docRef = await addDoc(collection(db, "products"), {
+  const docRef = doc(collection(db, "products"));
+  await setDoc(docRef, {
     ...product,
+    id: docRef.id,
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now(),
   });
-  await updateDoc(docRef, { id: docRef.id });
   return docRef.id;
 }
 
@@ -83,11 +84,12 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function createCategory(category: Omit<Category, "id">): Promise<string> {
-  const docRef = await addDoc(collection(db, "categories"), {
+  const docRef = doc(collection(db, "categories"));
+  await setDoc(docRef, {
     ...category,
+    id: docRef.id,
     createdAt: Timestamp.now(),
   });
-  await updateDoc(docRef, { id: docRef.id });
   return docRef.id;
 }
 
@@ -112,11 +114,14 @@ export async function getOrdersByUser(userId: string): Promise<Order[]> {
 }
 
 export async function createOrder(order: Omit<Order, "id">): Promise<string> {
-  const docRef = await addDoc(collection(db, "orders"), {
+  // Use setDoc with a pre-generated ID so we can include the id in the document
+  // without needing a separate updateDoc call (which would require admin permissions)
+  const docRef = doc(collection(db, "orders"));
+  await setDoc(docRef, {
     ...order,
+    id: docRef.id,
     createdAt: Timestamp.now(),
   });
-  await updateDoc(docRef, { id: docRef.id });
   return docRef.id;
 }
 

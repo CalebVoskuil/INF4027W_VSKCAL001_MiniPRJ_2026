@@ -108,7 +108,7 @@ export default function OrdersPage() {
                       {order.status}
                     </Badge>
                     <span className="font-semibold">
-                      R{order.totalAmount.toLocaleString()}
+                      R{order.totalAmount.toLocaleString("en-ZA")}
                     </span>
                     {expandedOrder === order.id ? (
                       <ChevronUp className="w-4 h-4 text-gray-400" />
@@ -155,11 +155,11 @@ export default function OrdersPage() {
                           <div className="flex-1">
                             <p className="text-sm font-medium">{item.productName}</p>
                             <p className="text-xs text-gray-500">
-                              Qty: {item.quantity} x R{item.price.toLocaleString()}
+                              Qty: {item.quantity} x R{item.price.toLocaleString("en-ZA")}
                             </p>
                           </div>
                           <p className="font-semibold text-sm">
-                            R{(item.price * item.quantity).toLocaleString()}
+                            R{(item.price * item.quantity).toLocaleString("en-ZA")}
                           </p>
                         </div>
                       ))}

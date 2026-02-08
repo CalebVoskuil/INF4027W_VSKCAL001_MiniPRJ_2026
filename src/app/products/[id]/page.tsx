@@ -196,7 +196,7 @@ export default function ProductDetailPage() {
           <p className="text-sm text-gray-500 mb-4">Brand: {product.brand}</p>
 
           <p className="text-3xl font-bold text-[#F85606] mb-6">
-            R{product.price.toLocaleString()}
+            R{product.price.toLocaleString("en-ZA")}
           </p>
 
           {/* Key Specs */}

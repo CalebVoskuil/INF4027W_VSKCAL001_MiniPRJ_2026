@@ -122,10 +122,10 @@ export default function AdminProductsPage() {
                   </Badge>
                 </td>
                 <td className="px-4 py-3 text-sm">
-                  R{product.price.toLocaleString()}
+                  R{product.price.toLocaleString("en-ZA")}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-500">
-                  R{product.costPrice.toLocaleString()}
+                  R{product.costPrice.toLocaleString("en-ZA")}
                 </td>
                 <td className="px-4 py-3 text-sm">{product.salesCount}</td>
                 <td className="px-4 py-3 text-right">

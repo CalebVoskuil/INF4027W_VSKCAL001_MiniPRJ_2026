@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ShoppingCart,
   User,
@@ -32,8 +32,14 @@ export default function Navbar() {
   const getTotalPrice = useCartStore((s) => s.getTotalPrice);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const totalItems = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
+  const totalPrice = mounted ? getTotalPrice() : 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +110,7 @@ export default function Navbar() {
           <div className="hidden sm:block text-sm">
             <div className="text-xs text-gray-500">Cart</div>
             <div className="font-semibold">
-              R{getTotalPrice().toLocaleString()}
+              R{totalPrice.toLocaleString("en-ZA")}
             </div>
           </div>
         </Link>
