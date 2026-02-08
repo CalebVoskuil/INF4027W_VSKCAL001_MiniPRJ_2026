@@ -25,6 +25,7 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { signOut } from "@/lib/firebase/auth";
+import { formatPrice } from "@/lib/utils/format";
 
 export default function Navbar() {
   const { user } = useAuthStore();
@@ -110,7 +111,7 @@ export default function Navbar() {
           <div className="hidden sm:block text-sm">
             <div className="text-xs text-gray-500">Cart</div>
             <div className="font-semibold">
-              R{totalPrice.toLocaleString("en-ZA")}
+              R{formatPrice(totalPrice)}
             </div>
           </div>
         </Link>

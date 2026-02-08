@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Package, ChevronDown, ChevronUp, Smartphone } from "lucide-react";
+import { formatPrice } from "@/lib/utils/format";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import AuthGuard from "@/components/layout/AuthGuard";
@@ -108,7 +109,7 @@ export default function OrdersPage() {
                       {order.status}
                     </Badge>
                     <span className="font-semibold">
-                      R{order.totalAmount.toLocaleString("en-ZA")}
+                      R{formatPrice(order.totalAmount)}
                     </span>
                     {expandedOrder === order.id ? (
                       <ChevronUp className="w-4 h-4 text-gray-400" />
@@ -155,11 +156,11 @@ export default function OrdersPage() {
                           <div className="flex-1">
                             <p className="text-sm font-medium">{item.productName}</p>
                             <p className="text-xs text-gray-500">
-                              Qty: {item.quantity} x R{item.price.toLocaleString("en-ZA")}
+                              Qty: {item.quantity} x R{formatPrice(item.price)}
                             </p>
                           </div>
                           <p className="font-semibold text-sm">
-                            R{(item.price * item.quantity).toLocaleString("en-ZA")}
+                            R{formatPrice(item.price * item.quantity)}
                           </p>
                         </div>
                       ))}

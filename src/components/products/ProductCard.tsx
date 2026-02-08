@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Product } from "@/types";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
+import { formatPrice } from "@/lib/utils/format";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { toast } from "sonner";
 
@@ -119,7 +120,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
 
         {/* Price */}
         <p className="text-lg font-bold text-[#F85606] mb-3">
-          R{product.price.toLocaleString("en-ZA")}
+          R{formatPrice(product.price)}
         </p>
 
         {/* Specs Grid */}

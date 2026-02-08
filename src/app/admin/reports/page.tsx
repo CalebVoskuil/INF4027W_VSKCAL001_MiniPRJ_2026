@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatPrice } from "@/lib/utils/format";
 import {
   BarChart,
   Bar,
@@ -168,19 +169,19 @@ export default function ReportsPage() {
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-gray-500">Total Revenue</p>
-                <p className="text-2xl font-bold text-green-600">R{totalRevenue.toLocaleString("en-ZA")}</p>
+                <p className="text-2xl font-bold text-green-600">R{formatPrice(totalRevenue)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-gray-500">Total Cost</p>
-                <p className="text-2xl font-bold">R{totalCost.toLocaleString("en-ZA")}</p>
+                <p className="text-2xl font-bold">R{formatPrice(totalCost)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-gray-500">Gross Profit</p>
-                <p className="text-2xl font-bold text-blue-600">R{grossProfit.toLocaleString("en-ZA")}</p>
+                <p className="text-2xl font-bold text-blue-600">R{formatPrice(grossProfit)}</p>
               </CardContent>
             </Card>
             <Card>
@@ -200,7 +201,7 @@ export default function ReportsPage() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <Tooltip formatter={(val) => `R${Number(val).toLocaleString("en-ZA")}`} />
+                    <Tooltip formatter={(val) => `R${formatPrice(Number(val))}`} />
                     <Bar dataKey="revenue" fill="#F85606" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -286,7 +287,7 @@ export default function ReportsPage() {
             <Card>
               <CardContent className="p-4">
                 <p className="text-sm text-gray-500">Avg Order Value</p>
-                <p className="text-2xl font-bold text-[#F85606]">R{avgOrderValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+                <p className="text-2xl font-bold text-[#F85606]">R{formatPrice(Math.round(avgOrderValue))}</p>
               </CardContent>
             </Card>
             <Card>
@@ -316,7 +317,7 @@ export default function ReportsPage() {
                             <p className="text-xs text-gray-500">{c.orders} orders</p>
                           </div>
                         </div>
-                        <span className="font-semibold">R{c.totalSpent.toLocaleString("en-ZA")}</span>
+                        <span className="font-semibold">R{formatPrice(c.totalSpent)}</span>
                       </div>
                     ))}
                   </div>

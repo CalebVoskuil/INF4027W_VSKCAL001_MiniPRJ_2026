@@ -8,6 +8,7 @@ import {
   Users,
   TrendingUp,
 } from "lucide-react";
+import { formatPrice } from "@/lib/utils/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProducts, getOrders, getAllUsers } from "@/lib/firebase/firestore";
 import { Product, Order, AppUser } from "@/types";
@@ -58,7 +59,7 @@ export default function AdminDashboard() {
   const statCards = [
     {
       title: "Total Revenue",
-      value: `R${stats.totalRevenue.toLocaleString("en-ZA")}`,
+      value: `R${formatPrice(stats.totalRevenue)}`,
       icon: DollarSign,
       color: "text-green-600 bg-green-100",
     },
@@ -150,7 +151,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-gray-500">{order.userEmail}</p>
                     </div>
                     <span className="font-semibold">
-                      R{order.totalAmount.toLocaleString("en-ZA")}
+                      R{formatPrice(order.totalAmount)}
                     </span>
                   </div>
                 ))}

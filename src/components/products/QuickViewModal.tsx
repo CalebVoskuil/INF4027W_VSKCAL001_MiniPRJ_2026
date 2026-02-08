@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ShoppingCart, Heart, Smartphone, X } from "lucide-react";
+import { formatPrice } from "@/lib/utils/format";
 import {
   Dialog,
   DialogContent,
@@ -77,7 +78,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             </div>
 
             <p className="text-3xl font-bold text-[#F85606] mb-4">
-              R{product.price.toLocaleString("en-ZA")}
+              R{formatPrice(product.price)}
             </p>
 
             <Separator className="my-4" />

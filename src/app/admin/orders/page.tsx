@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatPrice } from "@/lib/utils/format";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -100,7 +101,7 @@ export default function AdminOrdersPage() {
                 <td className="px-4 py-3 text-sm font-mono">#{order.id.slice(0, 8)}</td>
                 <td className="px-4 py-3 text-sm">{order.userEmail}</td>
                 <td className="px-4 py-3 text-sm text-gray-500">{formatDate(order.createdAt)}</td>
-                <td className="px-4 py-3 text-sm font-semibold">R{order.totalAmount.toLocaleString("en-ZA")}</td>
+                <td className="px-4 py-3 text-sm font-semibold">R{formatPrice(order.totalAmount)}</td>
                 <td className="px-4 py-3 text-sm capitalize">{order.paymentMethod}</td>
                 <td className="px-4 py-3">
                   <Select

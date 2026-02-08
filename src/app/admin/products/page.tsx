@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { formatPrice } from "@/lib/utils/format";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -122,10 +123,10 @@ export default function AdminProductsPage() {
                   </Badge>
                 </td>
                 <td className="px-4 py-3 text-sm">
-                  R{product.price.toLocaleString("en-ZA")}
+                  R{formatPrice(product.price)}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-500">
-                  R{product.costPrice.toLocaleString("en-ZA")}
+                  R{formatPrice(product.costPrice)}
                 </td>
                 <td className="px-4 py-3 text-sm">{product.salesCount}</td>
                 <td className="px-4 py-3 text-right">

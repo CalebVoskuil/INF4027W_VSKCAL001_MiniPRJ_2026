@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils/format";
 import {
   ShoppingCart,
   Heart,
@@ -196,7 +197,7 @@ export default function ProductDetailPage() {
           <p className="text-sm text-gray-500 mb-4">Brand: {product.brand}</p>
 
           <p className="text-3xl font-bold text-[#F85606] mb-6">
-            R{product.price.toLocaleString("en-ZA")}
+            R{formatPrice(product.price)}
           </p>
 
           {/* Key Specs */}
