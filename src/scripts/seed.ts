@@ -32,7 +32,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "512GB", battery: "5000mAh", camera: "200MP + 50MP + 12MP + 10MP", display: '6.8" Dynamic AMOLED 2X', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "S Pen", "water-resistant", "wireless-charging", "AI-camera"],
-    images: [], // TODO: add images
+    images: ["/images/phones/S24Ultrafront.jpg", "/images/phones/S24Ultraback.jpg"], 
     stock: 15,
     views: 245,
     salesCount: 42,
@@ -201,7 +201,7 @@ const products = [
     category: "midrange",
     specs: { ram: "12GB", storage: "256GB", battery: "4700mAh", camera: "50MP + 50MP", display: '6.7" LTPO AMOLED', processor: "Snapdragon 8+ Gen 1", os: "Android 13" },
     tags: ["5G", "Glyph-interface", "wireless-charging"],
-    images: [], // TODO: add images
+    images: ["/images/phones/NothingPhone2front.jpg", "/images/phones/NothingPhone2back.jpg"], // TODO: add images
     stock: 10,
     views: 167,
     salesCount: 25,
@@ -328,7 +328,7 @@ const products = [
     category: "budget",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + AI lens", display: '6.8" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["large-storage", "affordable"],
-    images: [], // TODO: add images
+    images: ["/images/phones/TechnoSparkFront.jpg", "/images/phones/TechnoSparkBack.jpg"], 
     stock: 45,
     views: 156,
     salesCount: 48,
