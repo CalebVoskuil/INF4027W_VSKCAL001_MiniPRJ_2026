@@ -32,7 +32,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "512GB", battery: "5000mAh", camera: "200MP + 50MP + 12MP + 10MP", display: '6.8" Dynamic AMOLED 2X', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "S Pen", "water-resistant", "wireless-charging", "AI-camera"],
-    images: ["/images/phones/S24Ultrafront.jpg", "/images/phones/S24Ultraback.jpg"], 
+    images: ["/images/phones/S24UltraFront.jpg", "/images/phones/S24UltraBack.jpg"], 
     stock: 15,
     views: 245,
     salesCount: 42,
@@ -257,7 +257,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "4500mAh", camera: "50MP + 8MP + 2MP", display: '6.55" AMOLED', processor: "Snapdragon 7 Gen 1", os: "Android 13" },
     tags: ["5G", "fast-charging-67W", "slim-design"],
-    images: [], // TODO: add images
+    images: ["/images/phones/xiaomi13LiteFront.jpeg", "/images/phones/xiaomi13LiteBack.jpeg"], 
     stock: 19,
     views: 76,
     salesCount: 15,
@@ -314,7 +314,7 @@ const products = [
     category: "budget",
     specs: { ram: "6GB", storage: "128GB", battery: "5000mAh", camera: "64MP + 2MP", display: '6.72" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["fast-charging-33W", "high-res-camera"],
-    images: [], // TODO: add images
+    images: ["/images/phones/RealmeC55Front.jpeg", "/images/phones/RealmeC55Back.jpeg"], 
     stock: 28,
     views: 98,
     salesCount: 30,
@@ -392,12 +392,12 @@ async function clearCollection(name: string) {
 
 async function seed() {
   // Clear old data first
-  console.log("🗑️  Clearing old data...");
+  console.log("  Clearing old data...");
   const deletedProducts = await clearCollection("products");
   const deletedCategories = await clearCollection("categories");
   console.log(`   Deleted ${deletedProducts} old products, ${deletedCategories} old categories\n`);
 
-  console.log("🌱 Seeding products...");
+  console.log(" Seeding products...");
   for (const product of products) {
     const docRef = doc(collection(db, "products"));
     await setDoc(docRef, {
@@ -407,10 +407,10 @@ async function seed() {
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     });
-    console.log(`  ✅ ${product.name} (${product.images.length} images)`);
+    console.log(`   ${product.name} (${product.images.length} images)`);
   }
 
-  console.log("\n📁 Seeding categories...");
+  console.log("\n Seeding categories...");
   for (const category of categories) {
     const docRef = doc(collection(db, "categories"));
     await setDoc(docRef, {
@@ -418,10 +418,10 @@ async function seed() {
       id: docRef.id,
       createdAt: Timestamp.now(),
     });
-    console.log(`  ✅ ${category.name}`);
+    console.log(`   ${category.name}`);
   }
 
-  console.log("\n🎉 Seeding complete!");
+  console.log("\n Seeding complete!");
   console.log(`   ${products.length} products added`);
   console.log(`   ${categories.length} categories added`);
   console.log("\nYou can now browse the store and see all phones with images!");
@@ -429,6 +429,6 @@ async function seed() {
 }
 
 seed().catch((error) => {
-  console.error("❌ Seed failed:", error);
+  console.error(" Seed failed:", error);
   process.exit(1);
 });
