@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,11 +21,24 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setUser } = useAuthStore();
+
+  // Show success toast if coming from email verification
+  useEffect(() => {
+    const verified = searchParams.get("verified");
+    if (verified === "true") {
+      toast.success("Email verified! You can now sign in.");
+    } else if (verified === "false") {
+      toast.error("Verification link is invalid or expired.");
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -35,8 +48,16 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  const handleResendVerification = () => {
+    if (unverifiedEmail) {
+      sessionStorage.setItem("pendingVerificationEmail", unverifiedEmail);
+    }
+    router.push("/verify-email");
+  };
+
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
+    setEmailNotVerified(false);
     try {
       const user = await signIn(data.email, data.password);
       setUser(user);
@@ -48,9 +69,15 @@ export default function LoginPage() {
       }
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : "Failed to sign in";
-      toast.error(msg.includes("auth/invalid-credential")
-        ? "Invalid email or password"
-        : msg);
+      if (msg === "email-not-verified") {
+        setEmailNotVerified(true);
+        setUnverifiedEmail(data.email);
+        toast.error("Please verify your email address before signing in.");
+      } else {
+        toast.error(msg.includes("auth/invalid-credential")
+          ? "Invalid email or password"
+          : msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -149,6 +176,21 @@ export default function LoginPage() {
             >
               {loading ? "Signing in..." : "Sign In"}
             </Button>
+
+            {emailNotVerified && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
+                <p className="text-sm text-amber-800">
+                  Your email hasn&apos;t been verified yet.{" "}
+                  <button
+                    type="button"
+                    onClick={handleResendVerification}
+                    className="font-semibold underline hover:no-underline"
+                  >
+                    Resend verification email
+                  </button>
+                </p>
+              </div>
+            )}
           </form>
 
           <div className="relative my-6">
@@ -200,5 +242,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="w-full max-w-md p-8 text-center text-gray-400">Loading...</div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

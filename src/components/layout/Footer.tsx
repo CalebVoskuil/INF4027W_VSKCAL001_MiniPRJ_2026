@@ -1,16 +1,56 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function Footer() {
   const pathname = usePathname();
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   // Hide footer on admin pages
   if (pathname?.startsWith("/admin")) return null;
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setSubscribing(true);
+    try {
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSubscribed(true);
+        setEmail("");
+        toast.success("Successfully subscribed to the newsletter!");
+      } else if (res.status === 409) {
+        toast.info("You're already subscribed!");
+        setSubscribed(true);
+      } else {
+        toast.error(data.error || "Failed to subscribe. Please try again.");
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubscribing(false);
+    }
+  };
 
   return (
     <footer className="bg-white border-t border-gray-200">
@@ -27,16 +67,35 @@ export default function Footer() {
             <p className="text-sm text-gray-500 mb-5 max-w-xs">
               Your destination for premium smartphones. AI-powered search to find the perfect phone.
             </p>
-            <div className="flex gap-2">
-              <Input
-                type="email"
-                placeholder="Enter Your Email"
-                className="bg-gray-50 border-gray-200 text-sm h-10 max-w-[220px]"
-              />
-              <Button size="sm" className="bg-foreground text-white hover:bg-gray-800 h-10 px-5 text-sm font-medium">
-                Subscribe
-              </Button>
-            </div>
+            {subscribed ? (
+              <div className="flex items-center gap-2 text-sm text-green-600 font-medium">
+                <CheckCircle2 className="w-4 h-4" />
+                Subscribed!
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <Input
+                  type="email"
+                  placeholder="Enter Your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-gray-50 border-gray-200 text-sm h-10 max-w-[220px]"
+                  disabled={subscribing}
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={subscribing}
+                  className="bg-foreground text-white hover:bg-gray-800 h-10 px-5 text-sm font-medium"
+                >
+                  {subscribing ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    "Subscribe"
+                  )}
+                </Button>
+              </form>
+            )}
           </div>
 
           {/* Quick Links */}

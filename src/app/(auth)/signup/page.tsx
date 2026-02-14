@@ -68,15 +68,17 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupForm) => {
     setLoading(true);
     try {
-      const user = await signUp(
+      await signUp(
         data.email,
         data.password,
         data.firstName,
         data.lastName
       );
-      setUser(user);
-      toast.success("Account created successfully!");
-      router.push("/");
+      // Don't setUser — the user must verify email before logging in
+      toast.success("Account created! Please check your email to verify.");
+      // Store email in sessionStorage so verify-email page can use it for resend
+      sessionStorage.setItem("pendingVerificationEmail", data.email);
+      router.push("/verify-email");
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : "Failed to create account";
       toast.error(

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useInView, useSpring, useTransform } from "framer-motion";
+import { Sparkles, X } from "lucide-react";
 import { formatPrice } from "@/lib/utils/format";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -507,6 +509,8 @@ export default function ReportsPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [insightText, setInsightText] = useState<string | null>(null);
+  const [insightLoading, setInsightLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -644,9 +648,108 @@ export default function ReportsPage() {
   });
   const demographicsData = Object.entries(locationData).map(([name, value]) => ({ name, value }));
 
+  async function generateInsights() {
+    setInsightLoading(true);
+    setInsightText(null);
+    try {
+      const res = await fetch("/api/ai-insights", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          totalRevenue,
+          totalCost,
+          grossProfit,
+          profitMargin,
+          totalOrders: orders.length,
+          avgOrderValue,
+          paymentBreakdown,
+          revenueByPayment,
+          topSellingProducts,
+          mostViewedProducts,
+          categoryData,
+          totalCustomers: customers.length,
+          topCustomers,
+          demographics: demographicsData,
+        }),
+      });
+      const data = await res.json();
+      setInsightText(data.summary ?? "No insights available.");
+    } catch {
+      setInsightText("Failed to generate insights. Please try again.");
+    } finally {
+      setInsightLoading(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Reports & Analytics</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Reports & Analytics</h1>
+        <Button
+          onClick={generateInsights}
+          disabled={insightLoading}
+          className="bg-foreground hover:bg-gray-800 text-white rounded-full px-5 text-sm font-medium"
+        >
+          <Sparkles className="w-4 h-4 mr-2" />
+          {insightLoading ? "Analyzing..." : "AI Insights"}
+        </Button>
+      </div>
+
+      {/* AI Insights Card */}
+      <AnimatePresence>
+        {insightLoading && (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card className="border-gray-200">
+              <CardContent className="p-6 space-y-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-gray-400 animate-pulse" />
+                  <span className="text-sm font-medium text-gray-400">Generating insights...</span>
+                </div>
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-4/6" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/6" />
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {insightText && !insightLoading && (
+          <motion.div
+            key="insights"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <Card className="border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-3 min-w-0">
+                    <Sparkles className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
+                    <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                      {insightText}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setInsightText(null)}
+                    className="p-1 text-gray-400 hover:text-foreground rounded-md transition-colors shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Tabs defaultValue="financial">
         <TabsList className="bg-gray-100 rounded-full p-0.5 mb-6">
