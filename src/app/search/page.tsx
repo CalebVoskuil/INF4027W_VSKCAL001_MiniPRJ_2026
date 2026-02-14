@@ -92,7 +92,7 @@ function SearchContent() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-coral flex items-center gap-1">
+        <Link href="/" className="hover:text-foreground flex items-center gap-1">
           <Home className="w-3.5 h-3.5" />
           Home
         </Link>
@@ -102,7 +102,7 @@ function SearchContent() {
 
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">
-          <Sparkles className="inline w-7 h-7 text-coral mr-2" />
+          <Sparkles className="inline w-7 h-7 text-foreground mr-2" />
           AI-Powered Search
         </h1>
         <p className="text-gray-500">
@@ -115,7 +115,7 @@ function SearchContent() {
       <div className="max-w-2xl mx-auto mb-10">
         {/* Text Search */}
         <form onSubmit={handleTextSearch} className="mb-6">
-          <div className="flex border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-coral">
+          <div className="flex border-2 border-gray-200 rounded-lg overflow-hidden focus-within:border-foreground">
             <input
               type="text"
               value={query}
@@ -126,7 +126,7 @@ function SearchContent() {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 bg-coral text-white hover:bg-coral-dark transition-colors flex items-center gap-2"
+              className="px-6 bg-foreground text-white hover:bg-gray-800 transition-colors flex items-center gap-2"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -143,7 +143,7 @@ function SearchContent() {
         </div>
 
         {/* Image Upload */}
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-coral transition-colors">
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-foreground transition-colors">
           {imagePreview ? (
             <div className="relative inline-block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -164,7 +164,7 @@ function SearchContent() {
               <Button
                 onClick={handleImageSearch}
                 disabled={loading}
-                className="mt-4 bg-coral hover:bg-coral-dark text-white"
+                className="mt-4 bg-foreground hover:bg-gray-800 text-white"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin mr-2" />

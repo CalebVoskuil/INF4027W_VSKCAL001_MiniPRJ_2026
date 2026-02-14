@@ -113,7 +113,7 @@ export default function CheckoutPage() {
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
           <Link href="/products">
-            <Button className="bg-coral hover:bg-coral-dark text-white">
+            <Button className="bg-foreground hover:bg-gray-800 text-white">
               Continue Shopping
             </Button>
           </Link>
@@ -127,12 +127,12 @@ export default function CheckoutPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <Link href="/" className="hover:text-coral flex items-center gap-1">
+          <Link href="/" className="hover:text-foreground flex items-center gap-1">
             <Home className="w-3.5 h-3.5" />
             Home
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/cart" className="hover:text-coral">Cart</Link>
+          <Link href="/cart" className="hover:text-foreground">Cart</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-gray-900 font-medium">Checkout</span>
         </nav>
@@ -148,7 +148,7 @@ export default function CheckoutPage() {
                   step > i + 1
                     ? "bg-green-500 text-white"
                     : step === i + 1
-                    ? "bg-coral text-white"
+                    ? "bg-foreground text-white"
                     : "bg-gray-200 text-gray-500"
                 }`}
               >
@@ -245,11 +245,11 @@ export default function CheckoutPage() {
                       onClick={() => setPaymentMethod(method.value)}
                       className={`flex items-center gap-3 p-4 border-2 rounded-lg transition-all ${
                         paymentMethod === method.value
-                          ? "border-coral bg-coral/5"
+                          ? "border-foreground bg-gray-50"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
-                      <method.icon className={`w-5 h-5 ${paymentMethod === method.value ? "text-coral" : "text-gray-500"}`} />
+                      <method.icon className={`w-5 h-5 ${paymentMethod === method.value ? "text-foreground" : "text-gray-500"}`} />
                       <span className="text-sm font-medium">{method.label}</span>
                     </button>
                   ))}
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-coral hover:bg-coral-dark text-white py-6 text-lg"
+                className="w-full bg-foreground hover:bg-gray-800 text-white py-6 text-lg"
               >
                 {loading ? "Processing..." : "Place Order"}
               </Button>
@@ -316,7 +316,7 @@ export default function CheckoutPage() {
               <Separator className="my-4" />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-coral">
+                <span className="text-foreground">
                   R{formatPrice(getTotalPrice())}
                 </span>
               </div>

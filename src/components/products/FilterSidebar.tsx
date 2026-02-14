@@ -101,7 +101,7 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
           <SlidersHorizontal className="w-4 h-4" />
           Filters
           {activeFilterCount > 0 && (
-            <Badge className="bg-coral text-white text-xs">
+            <Badge className="bg-foreground text-white text-xs">
               {activeFilterCount}
             </Badge>
           )}
@@ -111,7 +111,7 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
             variant="ghost"
             size="sm"
             onClick={clearFilters}
-            className="text-xs text-coral hover:text-coral-dark"
+            className="text-xs text-gray-500 hover:text-foreground"
           >
             Clear All
           </Button>
@@ -209,8 +209,8 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
               }
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 selectedRam.includes(ram)
-                  ? "bg-coral text-white border-coral"
-                  : "border-gray-300 hover:border-coral"
+                  ? "bg-foreground text-white border-foreground"
+                  : "border-gray-300 hover:border-foreground"
               }`}
             >
               {ram}
@@ -237,8 +237,8 @@ export default function FilterSidebar({ onMobileClose }: FilterSidebarProps) {
               }
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 selectedStorage.includes(storage)
-                  ? "bg-coral text-white border-coral"
-                  : "border-gray-300 hover:border-coral"
+                  ? "bg-foreground text-white border-foreground"
+                  : "border-gray-300 hover:border-foreground"
               }`}
             >
               {storage}

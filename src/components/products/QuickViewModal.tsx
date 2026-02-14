@@ -77,7 +77,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
               <span className="text-sm text-gray-500">{product.brand}</span>
             </div>
 
-            <p className="text-3xl font-bold text-coral mb-4">
+            <p className="text-3xl font-bold text-foreground mb-4">
               R{formatPrice(product.price)}
             </p>
 
@@ -116,7 +116,7 @@ export default function QuickViewModal({ product, onClose }: QuickViewModalProps
             <div className="flex gap-2">
               <Button
                 onClick={handleAddToCart}
-                className="flex-1 bg-coral hover:bg-coral-dark text-white"
+                className="flex-1 bg-foreground hover:bg-gray-800 text-white"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Add to Cart

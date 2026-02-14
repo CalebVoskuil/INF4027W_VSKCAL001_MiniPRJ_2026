@@ -93,8 +93,8 @@ export default function ProfilePage() {
     <AuthGuard>
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-coral/10 rounded-lg">
-            <User className="w-6 h-6 text-coral" />
+          <div className="p-2 bg-gray-100 rounded-lg">
+            <User className="w-6 h-6 text-foreground" />
           </div>
           <div>
             <h1 className="text-2xl font-bold">My Profile</h1>
@@ -135,7 +135,7 @@ export default function ProfilePage() {
             <Button
               type="submit"
               disabled={saving}
-              className="bg-coral hover:bg-coral-dark text-white"
+              className="bg-foreground hover:bg-gray-800 text-white"
             >
               <Save className="w-4 h-4 mr-2" />
               {saving ? "Saving..." : "Save Changes"}

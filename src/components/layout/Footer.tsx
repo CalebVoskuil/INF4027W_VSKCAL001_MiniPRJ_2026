@@ -1,128 +1,166 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Footer() {
   return (
-    <footer className="bg-foreground text-gray-300">
-      {/* Newsletter */}
-      <div className="border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-white text-lg font-semibold">
-              Subscribe to get our updates
-            </h3>
-            <p className="text-sm text-gray-400">
-              Get the latest deals and promotions delivered to your inbox.
+    <footer className="bg-white border-t border-gray-200">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+          {/* Logo + Newsletter */}
+          <div className="lg:col-span-2">
+            <Link href="/">
+              <h2 className="text-xl font-bold tracking-tight mb-3">
+                TechNest<span className="text-gray-400">.</span>
+              </h2>
+            </Link>
+            <p className="text-sm text-gray-500 mb-5 max-w-xs">
+              Your destination for premium smartphones. AI-powered search to find the perfect phone.
             </p>
+            <div className="flex gap-2">
+              <Input
+                type="email"
+                placeholder="Enter Your Email"
+                className="bg-gray-50 border-gray-200 text-sm h-10 max-w-[220px]"
+              />
+              <Button size="sm" className="bg-foreground text-white hover:bg-gray-800 h-10 px-5 text-sm font-medium">
+                Subscribe
+              </Button>
+            </div>
           </div>
-          <div className="flex w-full sm:w-auto gap-2">
-            <Input
-              type="email"
-              placeholder="Enter your email address..."
-              className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 min-w-[250px]"
-            />
-            <Button className="bg-coral hover:bg-coral-dark text-white shrink-0">
-              Subscribe
-            </Button>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="font-semibold text-sm mb-4">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm text-gray-500">
+              <li>
+                <Link href="/products" className="hover:text-foreground transition-colors">
+                  Shop
+                </Link>
+              </li>
+              <li>
+                <Link href="/search" className="hover:text-foreground transition-colors">
+                  AI Search
+                </Link>
+              </li>
+              <li>
+                <Link href="/cart" className="hover:text-foreground transition-colors">
+                  Cart
+                </Link>
+              </li>
+              <li>
+                <Link href="/orders" className="hover:text-foreground transition-colors">
+                  Order Tracking
+                </Link>
+              </li>
+              <li>
+                <Link href="/login" className="hover:text-foreground transition-colors">
+                  My Account
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h4 className="font-semibold text-sm mb-4">Legal Links</h4>
+            <ul className="space-y-2.5 text-sm text-gray-500">
+              <li>
+                <Link href="#" className="hover:text-foreground transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-foreground transition-colors">
+                  Terms &amp; Conditions
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-foreground transition-colors">
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-foreground transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-foreground transition-colors">
+                  Shipping Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-semibold text-sm mb-4">Contact Information</h4>
+            <ul className="space-y-2.5 text-sm text-gray-500">
+              <li className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-gray-400 shrink-0" />
+                info@technest.co.za
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-gray-400 shrink-0" />
+                +27 21 650 2100
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
+                UCT, Rondebosch, Cape Town, 7700
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {/* Contact */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Contact Us</h4>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-              University of Cape Town, Rondebosch, Cape Town, 7700
-            </li>
-            <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4 shrink-0" />
-              +27 21 650 2100
-            </li>
-            <li className="flex items-center gap-2">
-              <Mail className="w-4 h-4 shrink-0" />
-              info@technest.co.za
-            </li>
-          </ul>
-        </div>
-
-        {/* Categories */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Categories</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/products?category=flagship" className="hover:text-coral transition-colors">
-                Flagship Phones
-              </Link>
-            </li>
-            <li>
-              <Link href="/products?category=midrange" className="hover:text-coral transition-colors">
-                Mid-Range Phones
-              </Link>
-            </li>
-            <li>
-              <Link href="/products?category=budget" className="hover:text-coral transition-colors">
-                Budget Phones
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Quick Links */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/products" className="hover:text-coral transition-colors">
-                Shop All
-              </Link>
-            </li>
-            <li>
-              <Link href="/cart" className="hover:text-coral transition-colors">
-                Cart
-              </Link>
-            </li>
-            <li>
-              <Link href="/login" className="hover:text-coral transition-colors">
-                My Account
-              </Link>
-            </li>
-            <li>
-              <Link href="/orders" className="hover:text-coral transition-colors">
-                Order Tracking
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Payments */}
-        <div>
-          <h4 className="text-white font-semibold mb-4">We Accept</h4>
-          <div className="flex flex-wrap gap-2">
-            {["Visa", "MasterCard", "PayPal", "Cash"].map((method) => (
+      {/* Payment Methods + Socials */}
+      <div className="border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Payment Icons */}
+          <div className="flex items-center gap-2">
+            {["Visa", "MasterCard", "PayPal", "Apple Pay"].map((method) => (
               <span
                 key={method}
-                className="bg-gray-800 text-xs px-3 py-1.5 rounded border border-gray-700"
+                className="bg-gray-50 text-[11px] text-gray-500 font-medium px-3 py-1.5 rounded border border-gray-200"
               >
                 {method}
               </span>
             ))}
           </div>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-3">
+            <a
+              href="#"
+              className="p-2 text-gray-400 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a
+              href="#"
+              className="p-2 text-gray-400 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+            >
+              <Twitter className="w-4 h-4" />
+            </a>
+            <a
+              href="#"
+              className="p-2 text-gray-400 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 py-4 text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} TechNest. All rights reserved. |
-          INF4027W Mini Project 2026
+      <div className="border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 py-4 text-center text-xs text-gray-400">
+          &copy; {new Date().getFullYear()} TechNest. All rights reserved. | INF4027W Mini Project 2026
         </div>
       </div>
     </footer>

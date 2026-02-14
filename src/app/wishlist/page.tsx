@@ -38,8 +38,8 @@ export default function WishlistPage() {
     <AuthGuard>
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-coral/10 rounded-lg">
-            <Heart className="w-6 h-6 text-coral" />
+          <div className="p-2 bg-gray-100 rounded-lg">
+            <Heart className="w-6 h-6 text-foreground" />
           </div>
           <h1 className="text-2xl font-bold">My Wishlist</h1>
           <span className="text-sm text-gray-500">({items.length} items)</span>
@@ -63,7 +63,7 @@ export default function WishlistPage() {
               Save items you love by clicking the heart icon on products.
             </p>
             <Link href="/products">
-              <button className="px-6 py-2 bg-coral text-white rounded-md hover:bg-coral-dark">
+              <button className="px-6 py-2 bg-foreground text-white rounded-md hover:bg-gray-800">
                 Browse Products
               </button>
             </Link>

@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/layout/AuthProvider";
-import TopBar from "@/components/layout/TopBar";
 import Navbar from "@/components/layout/Navbar";
-import NavLinks from "@/components/layout/NavLinks";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -30,9 +28,7 @@ export default function RootLayout({
       <body className={`${inter.variable} antialiased font-sans`}>
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
-            <TopBar />
             <Navbar />
-            <NavLinks />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

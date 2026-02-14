@@ -235,7 +235,7 @@ export default function SignupPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-coral hover:bg-coral-dark text-white"
+              className="w-full bg-foreground hover:bg-gray-800 text-white"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </Button>
@@ -282,7 +282,7 @@ export default function SignupPage() {
             Already have an Account?{" "}
             <Link
               href="/login"
-              className="text-coral font-semibold hover:underline"
+              className="text-foreground font-semibold hover:underline"
             >
               Sign In
             </Link>

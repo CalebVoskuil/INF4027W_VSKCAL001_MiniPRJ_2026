@@ -87,8 +87,8 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
             onClick={handleWishlistToggle}
             className={`p-1.5 rounded-full shadow-md transition-colors ${
               inWishlist
-                ? "bg-coral text-white"
-                : "bg-white text-gray-600 hover:bg-coral hover:text-white"
+                ? "bg-red-500 text-white"
+                : "bg-white text-gray-600 hover:bg-foreground hover:text-white"
             }`}
           >
             <Heart className={`w-4 h-4 ${inWishlist ? "fill-current" : ""}`} />
@@ -99,7 +99,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
                 e.preventDefault();
                 onQuickView(product);
               }}
-              className="p-1.5 rounded-full bg-white text-gray-600 shadow-md hover:bg-coral hover:text-white transition-colors"
+              className="p-1.5 rounded-full bg-white text-gray-600 shadow-md hover:bg-foreground hover:text-white transition-colors"
             >
               <Eye className="w-4 h-4" />
             </button>
@@ -113,13 +113,13 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
             {product.brand}
           </p>
-          <h3 className="font-semibold text-sm line-clamp-2 mb-2 group-hover:text-coral transition-colors">
+          <h3 className="font-semibold text-sm line-clamp-2 mb-2 group-hover:text-gray-500 transition-colors">
             {product.name}
           </h3>
         </Link>
 
         {/* Price */}
-        <p className="text-lg font-bold text-coral mb-3">
+        <p className="text-lg font-bold text-foreground mb-3">
           R{formatPrice(product.price)}
         </p>
 
@@ -146,7 +146,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         {/* Add to Cart */}
         <Button
           onClick={handleAddToCart}
-          className="w-full bg-coral hover:bg-coral-dark text-white text-sm"
+          className="w-full bg-foreground hover:bg-gray-800 text-white text-sm"
           size="sm"
         >
           <ShoppingCart className="w-4 h-4 mr-1" />
