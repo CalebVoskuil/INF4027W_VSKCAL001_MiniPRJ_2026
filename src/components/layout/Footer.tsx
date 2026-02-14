@@ -1,11 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Hide footer on admin pages
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
     <footer className="bg-white border-t border-gray-200">
       {/* Main Content */}

@@ -32,7 +32,7 @@ export default function AdminLayout({
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-gray-200 shrink-0 hidden md:block">
           <div className="p-4">
-            <h2 className="font-bold text-lg text-coral">Admin Panel</h2>
+            <h2 className="font-bold text-lg text-foreground">Admin Panel</h2>
           </div>
           <nav className="space-y-1 px-2">
             {sidebarLinks.map((link) => {
@@ -43,8 +43,8 @@ export default function AdminLayout({
                   href={link.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-coral text-white"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-gray-100 text-foreground font-semibold"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-foreground"
                   }`}
                 >
                   <link.icon className="w-4 h-4" />
@@ -65,7 +65,7 @@ export default function AdminLayout({
                   key={link.href}
                   href={link.href}
                   className={`flex flex-col items-center py-2 px-3 text-xs ${
-                    isActive ? "text-coral" : "text-gray-500"
+                    isActive ? "text-foreground font-semibold" : "text-gray-400"
                   }`}
                 >
                   <link.icon className="w-5 h-5 mb-1" />

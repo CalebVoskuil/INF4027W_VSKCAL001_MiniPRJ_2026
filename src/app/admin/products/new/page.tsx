@@ -248,7 +248,7 @@ export default function NewProductPage() {
                 </button>
               </div>
             ))}
-            <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-coral">
+            <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-foreground">
               <Upload className="w-5 h-5 text-gray-400 mb-1" />
               <span className="text-xs text-gray-400">Upload</span>
               <input
@@ -265,7 +265,7 @@ export default function NewProductPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-coral hover:bg-coral-dark text-white py-6"
+          className="w-full sm:w-auto bg-foreground hover:bg-gray-800 text-white"
         >
           {loading ? "Creating..." : "Create Product"}
         </Button>
