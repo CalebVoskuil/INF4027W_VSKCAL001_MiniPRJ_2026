@@ -65,7 +65,7 @@ export default function AdminProductsPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Products</h1>
         <Link href="/admin/products/new">
-          <Button className="bg-coral hover:bg-coral-dark text-white">
+          <Button className="w-full sm:w-auto bg-foreground hover:bg-gray-800 text-white">
             <Plus className="w-4 h-4 mr-2" />
             Add Product
           </Button>

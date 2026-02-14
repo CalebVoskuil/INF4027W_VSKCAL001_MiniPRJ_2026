@@ -1,164 +1,150 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  DollarSign,
-  ShoppingBag,
-  Package,
-  Users,
-} from "lucide-react";
-import { formatPrice } from "@/lib/utils/format";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DollarSign, ShoppingBag, TrendingUp, Users } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
 import { getProducts, getOrders, getAllUsers } from "@/lib/firebase/firestore";
-import { Order } from "@/types";
+import { Order, AppUser } from "@/types";
+import { formatPrice } from "@/lib/utils/format";
+import {
+  getMonthlyComparison,
+  getDailyRevenue,
+  getOrderStatusBreakdown,
+  getRecentOrders,
+  MonthlyComparison,
+  DailyRevenue,
+  OrderStatusBreakdown,
+} from "@/lib/utils/analytics";
+import StatCard from "@/components/admin/StatCard";
+import SalesChart from "@/components/admin/SalesChart";
+import PerformanceRing from "@/components/admin/PerformanceRing";
+import OrderTable from "@/components/admin/OrderTable";
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    totalRevenue: 0,
-    totalOrders: 0,
-    totalProducts: 0,
-    totalCustomers: 0,
-    pendingOrders: 0,
-    completedOrders: 0,
-  });
   const [loading, setLoading] = useState(true);
-  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [comparison, setComparison] = useState<MonthlyComparison | null>(null);
+  const [data7d, setData7d] = useState<DailyRevenue[]>([]);
+  const [data30d, setData30d] = useState<DailyRevenue[]>([]);
+  const [dataAll, setDataAll] = useState<DailyRevenue[]>([]);
+  const [statusBreakdown, setStatusBreakdown] =
+    useState<OrderStatusBreakdown | null>(null);
+  const [recentOrders, setRecentOrdersList] = useState<Order[]>([]);
 
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchAll() {
       try {
-        const [products, orders, users] = await Promise.all([
+        const [, orders, users] = await Promise.all([
           getProducts([]),
           getOrders([]),
           getAllUsers(),
         ]);
 
-        const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
-        const customers = users.filter((u) => u.role === "customer");
-
-        setStats({
-          totalRevenue,
-          totalOrders: orders.length,
-          totalProducts: products.length,
-          totalCustomers: customers.length,
-          pendingOrders: orders.filter((o) => o.status === "pending").length,
-          completedOrders: orders.filter((o) => o.status === "completed").length,
-        });
-
-        setRecentOrders(orders.slice(0, 5));
+        setComparison(getMonthlyComparison(orders, users));
+        setData7d(getDailyRevenue(orders, 7));
+        setData30d(getDailyRevenue(orders, 30));
+        setDataAll(getDailyRevenue(orders, "all"));
+        setStatusBreakdown(getOrderStatusBreakdown(orders));
+        setRecentOrdersList(getRecentOrders(orders, 10));
       } catch (error) {
-        console.error("Failed to fetch stats:", error);
+        console.error("Failed to fetch dashboard data:", error);
       } finally {
         setLoading(false);
       }
     }
-    fetchStats();
+    fetchAll();
   }, []);
 
-  const statCards = [
-    {
-      title: "Total Revenue",
-      value: `R${formatPrice(stats.totalRevenue)}`,
-      icon: DollarSign,
-      color: "text-green-600 bg-green-100",
-    },
-    {
-      title: "Total Orders",
-      value: stats.totalOrders.toString(),
-      icon: ShoppingBag,
-      color: "text-blue-600 bg-blue-100",
-    },
-    {
-      title: "Products",
-      value: stats.totalProducts.toString(),
-      icon: Package,
-      color: "text-purple-600 bg-purple-100",
-    },
-    {
-      title: "Customers",
-      value: stats.totalCustomers.toString(),
-      icon: Users,
-      color: "text-orange-600 bg-orange-100",
-    },
-  ];
-
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {statCards.map((card) => (
-          <Card key={card.title}>
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Card key={i}>
+              <CardContent className="p-6 space-y-3">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-8 w-32" />
+                <Skeleton className="h-3 w-20" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card>
+              <CardContent className="p-6">
+                <Skeleton className="h-64 w-full" />
+              </CardContent>
+            </Card>
+          </div>
+          <Card>
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">{card.title}</p>
-                  <p className="text-2xl font-bold mt-1">
-                    {loading ? "..." : card.value}
-                  </p>
-                </div>
-                <div className={`p-3 rounded-lg ${card.color}`}>
-                  <card.icon className="w-5 h-5" />
-                </div>
-              </div>
+              <Skeleton className="h-64 w-full" />
             </CardContent>
           </Card>
-        ))}
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        </div>
         <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Order Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Pending Orders</span>
-                <span className="font-semibold text-yellow-600">
-                  {stats.pendingOrders}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Completed Orders</span>
-                <span className="font-semibold text-green-600">
-                  {stats.completedOrders}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Recent Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {recentOrders.length === 0 ? (
-              <p className="text-sm text-gray-500">No orders yet</p>
-            ) : (
-              <div className="space-y-3">
-                {recentOrders.map((order) => (
-                  <div
-                    key={order.id}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <div>
-                      <p className="font-medium">#{order.id.slice(0, 8)}</p>
-                      <p className="text-xs text-gray-500">{order.userEmail}</p>
-                    </div>
-                    <span className="font-semibold">
-                      R{formatPrice(order.totalAmount)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+          <CardContent className="p-6">
+            <Skeleton className="h-48 w-full" />
           </CardContent>
         </Card>
       </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+
+      {/* Row 1: Stat Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          title="Total Revenue"
+          value={comparison?.revenue.current ?? 0}
+          prefix="R"
+          format={formatPrice}
+          change={comparison?.revenue.change ?? 0}
+          icon={DollarSign}
+          index={0}
+        />
+        <StatCard
+          title="Avg Order Value"
+          value={Math.round(comparison?.avgOrderValue.current ?? 0)}
+          prefix="R"
+          format={formatPrice}
+          change={comparison?.avgOrderValue.change ?? 0}
+          icon={TrendingUp}
+          index={1}
+        />
+        <StatCard
+          title="Total Orders"
+          value={comparison?.orderCount.current ?? 0}
+          change={comparison?.orderCount.change ?? 0}
+          icon={ShoppingBag}
+          index={2}
+        />
+        <StatCard
+          title="Total Customers"
+          value={comparison?.customerCount.current ?? 0}
+          change={comparison?.customerCount.change ?? 0}
+          icon={Users}
+          index={3}
+        />
+      </div>
+
+      {/* Row 2: Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <SalesChart data7d={data7d} data30d={data30d} dataAll={dataAll} />
+        </div>
+        <div>
+          {statusBreakdown && <PerformanceRing data={statusBreakdown} />}
+        </div>
+      </div>
+
+      {/* Row 3: Order History Table */}
+      <OrderTable orders={recentOrders} />
     </div>
   );
 }

@@ -208,7 +208,7 @@ export default function EditProductPage() {
         <Button
           type="submit"
           disabled={saving}
-          className="w-full bg-coral hover:bg-coral-dark text-white py-6"
+          className="w-full sm:w-auto bg-foreground hover:bg-gray-800 text-white"
         >
           {saving ? "Saving..." : "Update Product"}
         </Button>
