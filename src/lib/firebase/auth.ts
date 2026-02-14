@@ -27,6 +27,9 @@ export async function signUp(
   const salt = generateSalt();
   const hashedPassword = hashPassword(password, salt);
 
+  // Generate a verification token for email verification
+  const verificationToken = crypto.randomUUID();
+
   const appUser: AppUser = {
     uid: user.uid,
     email: user.email!,
@@ -39,11 +42,30 @@ export async function signUp(
     },
     passwordHash: hashedPassword,
     salt: salt,
+    emailVerified: false,
+    verificationToken,
     createdAt: Timestamp.now(),
     lastLoginAt: Timestamp.now(),
   };
 
   await setDoc(doc(db, "users", user.uid), appUser);
+
+  // Send verification email via API
+  try {
+    await fetch("/api/auth/send-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: user.email,
+        firstName,
+        token: verificationToken,
+        uid: user.uid,
+      }),
+    });
+  } catch (e) {
+    console.error("Failed to send verification email:", e);
+  }
+
   return appUser;
 }
 
@@ -57,6 +79,13 @@ export async function signIn(email: string, password: string): Promise<AppUser> 
   }
 
   const userData = userDoc.data() as AppUser;
+
+  // Block login for unverified email users
+  if (userData.emailVerified === false) {
+    // Sign out so the unverified user isn't left authenticated in Firebase
+    await firebaseSignOut(auth);
+    throw new Error("email-not-verified");
+  }
 
   // Verify password against the stored hash for additional security
   if (userData.passwordHash && userData.salt) {
@@ -144,6 +173,8 @@ export async function signInWithGoogle(): Promise<AppUser> {
     },
     passwordHash: "", // No password for OAuth users
     salt: "", // No salt for OAuth users
+    emailVerified: true, // SSO users are inherently verified
+    verificationToken: null,
     createdAt: Timestamp.now(),
     lastLoginAt: Timestamp.now(),
   };
