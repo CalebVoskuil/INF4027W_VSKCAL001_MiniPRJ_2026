@@ -93,3 +93,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ── Marquee animation ────────────────────────────────────── */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Slow marquee on hover */
+.marquee-hover-slow:hover > div {
+  animation-duration: 60s !important;
+}
