@@ -72,7 +72,7 @@ export default function ProductGrid({ products, totalCount }: ProductGridProps) 
               onClick={() => setViewMode("grid")}
               className={`p-2 ${
                 viewMode === "grid"
-                  ? "bg-coral text-white"
+                  ? "bg-foreground text-white"
                   : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >
@@ -82,7 +82,7 @@ export default function ProductGrid({ products, totalCount }: ProductGridProps) 
               onClick={() => setViewMode("list")}
               className={`p-2 ${
                 viewMode === "list"
-                  ? "bg-coral text-white"
+                  ? "bg-foreground text-white"
                   : "bg-white text-gray-600 hover:bg-gray-50"
               }`}
             >

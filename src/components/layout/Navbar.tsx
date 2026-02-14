@@ -1,18 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import {
   ShoppingCart,
   User,
   Search,
-  Camera,
   LogOut,
   LayoutDashboard,
   Heart,
   Package,
-  ChevronDown,
+  Menu,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,159 +25,191 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import { signOut } from "@/lib/firebase/auth";
-import { formatPrice } from "@/lib/utils/format";
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/products", label: "Shop" },
+  { href: "/products?category=flagship", label: "Flagship" },
+  { href: "/products?category=midrange", label: "Mid-Range" },
+  { href: "/products?category=budget", label: "Budget" },
+];
 
 export default function Navbar() {
   const { user } = useAuthStore();
   const items = useCartStore((s) => s.items);
-  const getTotalPrice = useCartStore((s) => s.getTotalPrice);
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Avoid hydration mismatch: cart data comes from localStorage which doesn't exist on the server
+  // Avoid hydration mismatch: cart data comes from localStorage
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
     () => false
   );
 
-  const totalItems = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
-  const totalPrice = mounted ? getTotalPrice() : 0;
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
+  const totalItems = mounted
+    ? items.reduce((sum, item) => sum + item.quantity, 0)
+    : 0;
 
   const handleSignOut = async () => {
     await signOut();
     router.push("/");
   };
 
+  // Don't show nav chrome on admin pages
+  const isAdmin = pathname?.startsWith("/admin");
+  if (isAdmin) return null;
+
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6">
-        {/* Logo */}
+    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Left: Logo */}
         <Link href="/" className="shrink-0">
-          <h1 className="text-2xl font-bold">
-            <span className="text-coral">Tech</span>
+          <h1 className="text-xl font-bold tracking-tight">
+            <span className="text-foreground">Tech</span>
             <span className="text-foreground">Nest</span>
-            <span className="text-coral">.</span>
+            <span className="text-gray-400">.</span>
           </h1>
         </Link>
 
-        {/* Search Bar */}
-        <form
-          onSubmit={handleSearch}
-          className="flex-1 max-w-2xl flex items-center"
-        >
-          <div className="flex w-full border border-gray-300 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-coral focus-within:border-coral">
-            <input
-              type="text"
-              placeholder="Search with AI... (e.g. 'Android phone under R15k with good camera')"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-4 py-2 text-sm outline-none"
-            />
+        {/* Center: Nav Links (desktop) */}
+        <nav className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
             <Link
-              href="/search?mode=image"
-              className="px-3 flex items-center border-l border-gray-300 hover:bg-gray-50 transition-colors"
-              title="Search by image"
+              key={link.label}
+              href={link.href}
+              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                pathname === link.href
+                  ? "text-foreground bg-gray-100"
+                  : "text-gray-500 hover:text-foreground hover:bg-gray-50"
+              }`}
             >
-              <Camera className="w-4 h-4 text-gray-500" />
+              {link.label}
             </Link>
-            <button
-              type="submit"
-              className="px-4 bg-coral text-white hover:bg-coral-dark transition-colors"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-          </div>
-        </form>
+          ))}
+        </nav>
 
-        {/* Cart */}
-        <Link
-          href="/cart"
-          className="flex items-center gap-2 hover:text-coral transition-colors"
-        >
-          <div className="relative">
+        {/* Right: Icons + Auth */}
+        <div className="flex items-center gap-2">
+          {/* Search */}
+          <Link
+            href="/search"
+            className="p-2 text-gray-500 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+          >
+            <Search className="w-5 h-5" />
+          </Link>
+
+          {/* Wishlist */}
+          <Link
+            href="/wishlist"
+            className="p-2 text-gray-500 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+          >
+            <Heart className="w-5 h-5" />
+          </Link>
+
+          {/* Cart */}
+          <Link
+            href="/cart"
+            className="p-2 text-gray-500 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors relative"
+          >
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-coral text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 bg-foreground text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
-          </div>
-          <div className="hidden sm:block text-sm">
-            <div className="text-xs text-gray-500">Cart</div>
-            <div className="font-semibold">
-              R{formatPrice(totalPrice)}
-            </div>
-          </div>
-        </Link>
-
-        {/* User Account */}
-        {user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="flex items-center gap-2 hover:text-coral"
-              >
-                <User className="w-5 h-5" />
-                <div className="hidden sm:block text-left text-sm">
-                  <div className="text-xs text-gray-500">Welcome</div>
-                  <div className="font-semibold flex items-center gap-1">
-                    {user.firstName}
-                    <ChevronDown className="w-3 h-3" />
-                  </div>
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              {user.role === "admin" && (
-                <>
-                  <DropdownMenuItem onClick={() => router.push("/admin/dashboard")}>
-                    <LayoutDashboard className="w-4 h-4 mr-2" />
-                    Admin Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                </>
-              )}
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <User className="w-4 h-4 mr-2" />
-                My Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/orders")}>
-                <Package className="w-4 h-4 mr-2" />
-                My Orders
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push("/wishlist")}>
-                <Heart className="w-4 h-4 mr-2" />
-                Wishlist
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <Link
-            href="/login"
-            className="flex items-center gap-2 hover:text-coral transition-colors"
-          >
-            <User className="w-5 h-5" />
-            <div className="hidden sm:block text-sm">
-              <div className="text-xs text-gray-500">Login</div>
-              <div className="font-semibold">Account</div>
-            </div>
           </Link>
-        )}
+
+          {/* Auth */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-2 text-gray-500 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors">
+                  <User className="w-5 h-5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <div className="px-2 py-1.5 text-sm font-medium">
+                  {user.firstName} {user.lastName}
+                </div>
+                <DropdownMenuSeparator />
+                {user.role === "admin" && (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => router.push("/admin/dashboard")}
+                    >
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
+                      Admin Dashboard
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="w-4 h-4 mr-2" />
+                  My Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/orders")}>
+                  <Package className="w-4 h-4 mr-2" />
+                  My Orders
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/wishlist")}>
+                  <Heart className="w-4 h-4 mr-2" />
+                  Wishlist
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link href="/login">
+              <Button
+                size="sm"
+                className="bg-foreground text-white hover:bg-gray-800 rounded-full px-5 text-sm font-medium"
+              >
+                Sign Up
+              </Button>
+            </Link>
+          )}
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden p-2 text-gray-500 hover:text-foreground rounded-full hover:bg-gray-50 transition-colors"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile nav dropdown */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-gray-100 bg-white">
+          <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className={`px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                  pathname === link.href
+                    ? "text-foreground bg-gray-100"
+                    : "text-gray-500 hover:text-foreground hover:bg-gray-50"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

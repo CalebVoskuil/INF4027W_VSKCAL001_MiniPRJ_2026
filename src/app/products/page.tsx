@@ -68,7 +68,7 @@ function ProductsContent() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-coral flex items-center gap-1">
+        <Link href="/" className="hover:text-foreground flex items-center gap-1">
           <Home className="w-3.5 h-3.5" />
           Home
         </Link>
