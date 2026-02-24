@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ChatAssistant from "@/components/chat/ChatAssistant";
+import { Suspense } from "react";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -28,11 +29,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased font-sans`}>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+        <div className="flex flex-col min-h-screen">
+  <Suspense fallback={null}>
+    <Navbar />
+  </Suspense>
+  <main className="flex-1">{children}</main>
+  <Footer />
+</div>
           <Toaster position="top-right" richColors />
           <ChatAssistant />
           <SpeedInsights />
