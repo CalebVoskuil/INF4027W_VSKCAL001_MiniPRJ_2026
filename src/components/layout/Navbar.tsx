@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
+import { motion } from "framer-motion";
 import {
   ShoppingCart,
   User,
@@ -39,6 +40,7 @@ export default function Navbar() {
   const items = useCartStore((s) => s.items);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Avoid hydration mismatch: cart data comes from localStorage
@@ -55,6 +57,30 @@ export default function Navbar() {
   const handleSignOut = async () => {
     await signOut();
     router.push("/");
+  };
+
+  const currentCategory = pathname === "/products" ? searchParams.get("category") : null;
+
+  const isActive = (href: string) => {
+    if (!pathname) return false;
+
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    if (href === "/products") {
+      return pathname === "/products" && !currentCategory;
+    }
+
+    if (href.startsWith("/products?category=")) {
+      if (pathname !== "/products") return false;
+      const query = href.split("?")[1] || "";
+      const params = new URLSearchParams(query);
+      const hrefCategory = params.get("category");
+      return !!hrefCategory && hrefCategory === currentCategory;
+    }
+
+    return pathname === href;
   };
 
   // Don't show nav chrome on admin pages
@@ -74,20 +100,30 @@ export default function Navbar() {
         </Link>
 
         {/* Center: Nav Links (desktop) */}
-        <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                pathname === link.href
-                  ? "text-foreground bg-gray-100"
-                  : "text-gray-500 hover:text-foreground hover:bg-gray-50"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-1 relative">
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`relative px-3 py-2 text-sm font-medium transition-colors ${
+                  active
+                    ? "text-foreground"
+                    : "text-gray-500 hover:text-foreground"
+                }`}
+              >
+                {link.label}
+                {active && (
+                  <motion.div
+                    layoutId="nav-underline"
+                    className="absolute left-2 right-2 -bottom-1 h-0.5 bg-foreground rounded-full"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right: Icons + Auth */}
@@ -198,10 +234,10 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${
-                  pathname === link.href
-                    ? "text-foreground bg-gray-100"
-                    : "text-gray-500 hover:text-foreground hover:bg-gray-50"
+                className={`px-3 py-2.5 text-sm font-medium rounded-md transition-colors border-l-2 ${
+                  isActive(link.href)
+                    ? "text-foreground bg-gray-50 border-foreground"
+                    : "text-gray-500 hover:text-foreground hover:bg-gray-50 border-transparent"
                 }`}
               >
                 {link.label}

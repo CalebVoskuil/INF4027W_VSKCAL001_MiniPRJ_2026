@@ -201,7 +201,7 @@ const products = [
     category: "midrange",
     specs: { ram: "12GB", storage: "256GB", battery: "4700mAh", camera: "50MP + 50MP", display: '6.7" LTPO AMOLED', processor: "Snapdragon 8+ Gen 1", os: "Android 13" },
     tags: ["5G", "Glyph-interface", "wireless-charging"],
-    images: ["/images/phones/NothingPhone2front.jpg", "/images/phones/NothingPhone2back.jpg"], // TODO: add images
+    images: ["/images/phones/NothingPhone2Front.jpg", "/images/phones/NothingPhone2back.jpg"], // TODO: add images
     stock: 10,
     views: 167,
     salesCount: 25,
@@ -314,7 +314,7 @@ const products = [
     category: "budget",
     specs: { ram: "6GB", storage: "128GB", battery: "5000mAh", camera: "64MP + 2MP", display: '6.72" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["fast-charging-33W", "high-res-camera"],
-    images: ["/images/phones/RealmeC55Front.jpeg", "/images/phones/RealmeC55Back.jpeg"], 
+    images: ["/images/phones/realmeC55Front.jpeg", "/images/phones/realmeC55Back.jpeg"], 
     stock: 28,
     views: 98,
     salesCount: 30,
