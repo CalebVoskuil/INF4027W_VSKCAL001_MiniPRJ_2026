@@ -46,7 +46,7 @@ const products = [
     category: "flagship",
     specs: { ram: "8GB", storage: "256GB", battery: "4422mAh", camera: "48MP + 12MP + 12MP", display: '6.7" Super Retina XDR', processor: "A17 Pro", os: "iOS 17" },
     tags: ["5G", "titanium", "action-button", "MagSafe"],
-    images: [], // TODO: add images
+    images: ["/images/phones/promaxFront.jpg", "/images/phones/promaxBack.png"], // TODO: add images
     stock: 20,
     views: 312,
     salesCount: 56,
@@ -60,7 +60,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "512GB", battery: "4880mAh", camera: "50MP + 50MP + 50MP", display: '6.73" AMOLED', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "Leica-camera", "fast-charging-120W"],
-    images: [], // TODO: add images
+    images: ["/images/phones/xiaomi14Front.png", "/images/phones/xiaomi14Back.jpg"], // TODO: add images
     stock: 12,
     views: 156,
     salesCount: 28,
@@ -74,7 +74,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "256GB", battery: "5050mAh", camera: "50MP + 48MP + 48MP", display: '6.7" LTPO OLED', processor: "Google Tensor G3", os: "Android 14" },
     tags: ["5G", "AI-features", "stock-android", "wireless-charging"],
-    images: [], // TODO: add images
+    images: ["/images/phones/8proFront.jpg", "/images/phones/8proBack.jpg"], 
     stock: 10,
     views: 198,
     salesCount: 35,
@@ -88,7 +88,7 @@ const products = [
     category: "flagship",
     specs: { ram: "16GB", storage: "512GB", battery: "5400mAh", camera: "50MP + 64MP + 48MP", display: '6.82" AMOLED', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "fast-charging-100W", "Hasselblad"],
-    images: [], // TODO: add images
+    images: ["/images/phones/oneplus12Front.png", "/images/phones/oneplus12Back.png"],
     stock: 8,
     views: 134,
     salesCount: 22,
@@ -102,7 +102,7 @@ const products = [
     category: "flagship",
     specs: { ram: "12GB", storage: "256GB", battery: "4900mAh", camera: "50MP + 12MP + 10MP", display: '6.7" Dynamic AMOLED 2X', processor: "Snapdragon 8 Gen 3", os: "Android 14" },
     tags: ["5G", "AI-features", "water-resistant", "wireless-charging"],
-    images: [], // TODO: add images
+    images: ["/images/phones/galaxy24Front.jpg", "/images/phones/galaxy24Back.jpg"], // TODO: add images
     stock: 14,
     views: 189,
     salesCount: 38,
@@ -145,8 +145,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + 12MP + 5MP", display: '6.4" Super AMOLED', processor: "Exynos 1380", os: "Android 14" },
     tags: ["5G", "water-resistant", "stereo-speakers"],
-    images: [], // TODO: add images
-    stock: 25,
+    images: ["/images/phones/a54Front.jpg", "/images/phones/a54Back.jpg"], 
     views: 178,
     salesCount: 52,
   },
@@ -159,7 +158,7 @@ const products = [
     category: "midrange",
     specs: { ram: "6GB", storage: "128GB", battery: "3349mAh", camera: "48MP + 12MP", display: '6.1" Super Retina XDR', processor: "A16 Bionic", os: "iOS 17" },
     tags: ["5G", "ceramic-shield", "MagSafe"],
-    images: [], // TODO: add images
+    images: ["/images/phones/15Front.jpg", "/images/phones/15Back.png"], // TODO: add images
     stock: 18,
     views: 234,
     salesCount: 48,
@@ -173,7 +172,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "5100mAh", camera: "200MP + 8MP + 2MP", display: '6.67" AMOLED', processor: "Snapdragon 7s Gen 2", os: "Android 13" },
     tags: ["5G", "fast-charging-67W", "high-res-camera"],
-    images: [], // TODO: add images
+    images: ["/images/phones/Note13ProFront.jpg", "/images/phones/Note13ProBack.jpg"], // TODO: add images
     stock: 30,
     views: 145,
     salesCount: 40,
@@ -187,7 +186,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "256GB", battery: "4400mAh", camera: "50MP + 13MP", display: '6.55" pOLED', processor: "MediaTek Dimensity 8020", os: "Android 13" },
     tags: ["5G", "wireless-charging", "water-resistant"],
-    images: [], // TODO: add images
+    images: ["/images/phones/motorolaFront.jpg", "/images/phones/motorolaBack.png"], // TODO: add images
     stock: 15,
     views: 89,
     salesCount: 18,
@@ -243,7 +242,7 @@ const products = [
     category: "midrange",
     specs: { ram: "8GB", storage: "128GB", battery: "4385mAh", camera: "64MP + 13MP", display: '6.1" OLED', processor: "Google Tensor G2", os: "Android 14" },
     tags: ["5G", "stock-android", "wireless-charging"],
-    images: [], // TODO: add images
+    images: ["/images/phones/pixel7aFront.jpg", "/images/phones/pixel7aBack.jpg"], // TODO: add images
     stock: 13,
     views: 143,
     salesCount: 27,
@@ -272,8 +271,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 2MP + 2MP", display: '6.6" PLS LCD', processor: "MediaTek Helio G80", os: "Android 13" },
     tags: ["expandable-storage", "long-battery"],
-    images: [], // TODO: add images
-    stock: 40,
+    images: ["/images/phones/a14Front.png", "/images/phones/a14Back.jpeg"], 
     views: 201,
     salesCount: 65,
   },
@@ -286,7 +284,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 8MP + 2MP", display: '6.79" IPS LCD', processor: "MediaTek Helio G88", os: "Android 13" },
     tags: ["fast-charging-18W", "large-display"],
-    images: [], // TODO: add images
+    images: ["/images/phones/redmi12Front.jpg", "/images/phones/redmi12Back.png"], 
     stock: 35,
     views: 178,
     salesCount: 58,
@@ -300,7 +298,7 @@ const products = [
     category: "budget",
     specs: { ram: "8GB", storage: "256GB", battery: "5000mAh", camera: "50MP + 2MP", display: '6.43" AMOLED', processor: "Snapdragon 680", os: "Android 13" },
     tags: ["fast-charging-67W", "AMOLED"],
-    images: [], // TODO: add images
+    images: ["/images/phones/a78Front.jpg", "/images/phones/a78Back.png"], 
     stock: 22,
     views: 134,
     salesCount: 36,
@@ -342,7 +340,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 2MP + 2MP", display: '6.7" PLS LCD', processor: "Snapdragon 680", os: "Android 13" },
     tags: ["affordable", "long-battery", "expandable-storage"],
-    images: [], // TODO: add images
+    images: ["/images/phones/galaxyFront.jpg", "/images/phones/galaxyBack.jpg"], // TODO: add images
     stock: 50,
     views: 223,
     salesCount: 72,
@@ -356,7 +354,7 @@ const products = [
     category: "budget",
     specs: { ram: "4GB", storage: "128GB", battery: "5000mAh", camera: "50MP + 0.08MP", display: '6.74" IPS LCD', processor: "MediaTek Helio G85", os: "Android 13" },
     tags: ["affordable", "large-display"],
-    images: [], // TODO: add images
+    images: ["/images/phones/13cFront.jpg", "/images/phones/13cBack.jpg"], 
     stock: 38,
     views: 167,
     salesCount: 55,
