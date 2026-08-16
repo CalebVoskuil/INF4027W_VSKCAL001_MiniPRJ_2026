@@ -1,6 +1,6 @@
 # TechNest - Premium Mobile Phone Store
 
-An AI-powered e-commerce platform for mobile phones built with Next.js, Firebase, and OpenAI.
+
 
 **INF4027W Mini Project 2026**
 
