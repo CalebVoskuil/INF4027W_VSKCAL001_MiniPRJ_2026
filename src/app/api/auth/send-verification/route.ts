@@ -6,7 +6,8 @@ import { db } from "@/lib/firebase/config";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    let { email, firstName, token, uid } = body;
+    const { email } = body;
+    let { firstName, token, uid } = body;
 
     if (!email) {
       return NextResponse.json(

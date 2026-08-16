@@ -91,13 +91,12 @@ function DonutChart({
   const SIZE = (RADIUS + STROKE) * 2;
   const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-  // Compute cumulative offsets
-  let cumulative = 0;
   const segments = data.map((d, i) => {
     const fraction = d.value / total;
     const dash = fraction * CIRCUMFERENCE;
-    const offset = -cumulative;
-    cumulative += dash;
+    const offset = -data
+      .slice(0, i)
+      .reduce((sum, segment) => sum + (segment.value / total) * CIRCUMFERENCE, 0);
     return { ...d, dash, offset, color: RING_COLORS[i % RING_COLORS.length] };
   });
 

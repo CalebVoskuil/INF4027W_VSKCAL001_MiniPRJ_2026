@@ -70,6 +70,14 @@ export interface OrderItem {
   costPrice: number;
 }
 
+export interface StudentDiscountOrderMetadata {
+  type: "STUDENT";
+  rate: number;
+  amount: number;
+  checkoutId: string;
+  verificationRequestId: string;
+}
+
 export interface Order {
   id: string;
   userId: string;
@@ -81,6 +89,7 @@ export interface Order {
   status: "pending" | "completed";
   createdAt: Timestamp | Date;
   completedAt: Timestamp | Date | null;
+  studentDiscount?: StudentDiscountOrderMetadata;
 }
 
 // Wishlist Types

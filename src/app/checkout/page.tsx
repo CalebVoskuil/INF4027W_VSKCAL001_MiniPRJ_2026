@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,8 +25,17 @@ import AuthGuard from "@/components/layout/AuthGuard";
 import { useCartStore } from "@/store/cartStore";
 import { useAuthStore } from "@/store/authStore";
 import { createOrder } from "@/lib/firebase/firestore";
+import { auth } from "@/lib/firebase/config";
 import { toast } from "sonner";
 import { formatPrice } from "@/lib/utils/format";
+import StudentDiscountCard, {
+  getStudentDiscountCartFingerprint,
+  isStudentDiscountActive,
+} from "@/components/checkout/StudentDiscountCard";
+import {
+  STUDENT_DISCOUNT_RATE,
+  type StudentDiscountSession,
+} from "@/lib/studentDiscount/types";
 
 const checkoutSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -51,9 +60,39 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "card" | "paypal">("card");
   const [loading, setLoading] = useState(false);
   const [step] = useState(1);
+  const [studentDiscountSession, setStudentDiscountSession] =
+    useState<StudentDiscountSession | null>(null);
+  const [studentDiscountCartFingerprint, setStudentDiscountCartFingerprint] =
+    useState<string | null>(null);
+  const [discountCardKey, setDiscountCardKey] = useState(0);
   const router = useRouter();
-  const { items, getTotalPrice, clearCart } = useCartStore();
+  const { items, clearCart } = useCartStore();
   const { user } = useAuthStore();
+  const discountCart = useMemo(
+    () =>
+      items.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+        unitPrice: item.product.price,
+      })),
+    [items]
+  );
+  const cartFingerprint = useMemo(
+    () => getStudentDiscountCartFingerprint(discountCart),
+    [discountCart]
+  );
+  const subtotal = items.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
+  const hasActiveStudentDiscount =
+    studentDiscountCartFingerprint === cartFingerprint &&
+    isStudentDiscountActive(studentDiscountSession);
+  const studentDiscountAmount = hasActiveStudentDiscount
+    ? Math.round((subtotal * STUDENT_DISCOUNT_RATE + Number.EPSILON) * 100) / 100
+    : 0;
+  const orderTotal =
+    Math.round((subtotal - studentDiscountAmount + Number.EPSILON) * 100) / 100;
 
   const {
     register,
@@ -73,6 +112,49 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
+      let confirmedStudentDiscount: StudentDiscountSession | null = null;
+
+      if (hasActiveStudentDiscount && studentDiscountSession) {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          toast.error("Please sign in again before placing a discounted order.");
+          return;
+        }
+
+        const token = await currentUser.getIdToken();
+        const response = await fetch(
+          `/api/student-discount/sessions/${encodeURIComponent(studentDiscountSession.checkoutId)}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            cache: "no-store",
+          }
+        );
+
+        if (!response.ok) {
+          setStudentDiscountSession(null);
+          setStudentDiscountCartFingerprint(null);
+          setDiscountCardKey((value) => value + 1);
+          toast.error("We could not reconfirm your student discount. Please verify again.");
+          return;
+        }
+
+        const latestSession = (await response.json()) as StudentDiscountSession;
+        const stillMatches =
+          latestSession.verificationRequestId ===
+          studentDiscountSession.verificationRequestId;
+
+        if (!stillMatches || !isStudentDiscountActive(latestSession)) {
+          setStudentDiscountSession(null);
+          setStudentDiscountCartFingerprint(null);
+          setDiscountCardKey((value) => value + 1);
+          toast.error("Your student discount is no longer valid. You can verify again or continue without it.");
+          return;
+        }
+
+        confirmedStudentDiscount = latestSession;
+        setStudentDiscountSession(latestSession);
+      }
+
       const orderItems = items.map((item) => ({
         productId: item.product.id,
         productName: item.product.name,
@@ -82,18 +164,28 @@ export default function CheckoutPage() {
         costPrice: item.product.costPrice,
       }));
 
-      const subtotal = getTotalPrice();
-
       const orderId = await createOrder({
         userId: user.uid,
         userEmail: user.email,
         items: orderItems,
         subtotal,
-        totalAmount: subtotal,
+        totalAmount: confirmedStudentDiscount ? orderTotal : subtotal,
         paymentMethod,
         status: paymentMethod === "cash" ? "pending" : "completed",
         createdAt: new Date(),
         completedAt: paymentMethod === "cash" ? null : new Date(),
+        ...(confirmedStudentDiscount
+          ? {
+              studentDiscount: {
+                type: "STUDENT" as const,
+                rate: STUDENT_DISCOUNT_RATE,
+                amount: studentDiscountAmount,
+                checkoutId: confirmedStudentDiscount.checkoutId,
+                verificationRequestId:
+                  confirmedStudentDiscount.verificationRequestId,
+              },
+            }
+          : {}),
       });
 
       clearCart();
@@ -302,12 +394,28 @@ export default function CheckoutPage() {
                   </div>
                 ))}
               </div>
+              <StudentDiscountCard
+                key={discountCardKey}
+                cart={discountCart}
+                onSessionChange={(session) => {
+                  setStudentDiscountSession(session);
+                  setStudentDiscountCartFingerprint(
+                    session?.status === "APPROVED" ? cartFingerprint : null
+                  );
+                }}
+              />
               <Separator className="my-4" />
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Subtotal</span>
-                  <span>R{formatPrice(getTotalPrice())}</span>
+                  <span>R{formatPrice(subtotal)}</span>
                 </div>
+                {hasActiveStudentDiscount ? (
+                  <div className="flex justify-between text-emerald-700">
+                    <span>Student discount (10%)</span>
+                    <span>-R{formatPrice(studentDiscountAmount)}</span>
+                  </div>
+                ) : null}
                 <div className="flex justify-between">
                   <span className="text-gray-500">Shipping</span>
                   <span className="text-green-600">Free</span>
@@ -317,7 +425,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-foreground">
-                  R{formatPrice(getTotalPrice())}
+                  R{formatPrice(orderTotal)}
                 </span>
               </div>
             </div>
