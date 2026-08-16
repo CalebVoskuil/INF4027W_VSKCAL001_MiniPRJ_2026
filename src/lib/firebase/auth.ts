@@ -6,8 +6,6 @@ import {
   updatePassword,
   User,
   sendPasswordResetEmail,
-  GoogleAuthProvider,
-  signInWithPopup,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "./config";
@@ -27,9 +25,6 @@ export async function signUp(
   const salt = generateSalt();
   const hashedPassword = hashPassword(password, salt);
 
-  // Generate a verification token for email verification
-  const verificationToken = crypto.randomUUID();
-
   const appUser: AppUser = {
     uid: user.uid,
     email: user.email!,
@@ -42,29 +37,11 @@ export async function signUp(
     },
     passwordHash: hashedPassword,
     salt: salt,
-    emailVerified: false,
-    verificationToken,
     createdAt: Timestamp.now(),
     lastLoginAt: Timestamp.now(),
   };
 
   await setDoc(doc(db, "users", user.uid), appUser);
-
-  // Send verification email via API
-  try {
-    await fetch("/api/auth/send-verification", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user.email,
-        firstName,
-        token: verificationToken,
-        uid: user.uid,
-      }),
-    });
-  } catch (e) {
-    console.error("Failed to send verification email:", e);
-  }
 
   return appUser;
 }
@@ -79,13 +56,6 @@ export async function signIn(email: string, password: string): Promise<AppUser> 
   }
 
   const userData = userDoc.data() as AppUser;
-
-  // Block login for unverified email users
-  if (userData.emailVerified === false) {
-    // Sign out so the unverified user isn't left authenticated in Firebase
-    await firebaseSignOut(auth);
-    throw new Error("email-not-verified");
-  }
 
   // Verify password against the stored hash for additional security
   if (userData.passwordHash && userData.salt) {
@@ -134,53 +104,6 @@ export async function updateUserPassword(newPassword: string): Promise<void> {
 
 export async function resetPassword(email: string): Promise<void> {
   await sendPasswordResetEmail(auth, email);
-}
-
-export async function signInWithGoogle(): Promise<AppUser> {
-  const provider = new GoogleAuthProvider();
-  const userCredential = await signInWithPopup(auth, provider);
-  const user = userCredential.user;
-
-  // Check if user already exists in Firestore
-  const userDoc = await getDoc(doc(db, "users", user.uid));
-  
-  if (userDoc.exists()) {
-    // User already exists, update last login and return
-    const userData = userDoc.data() as AppUser;
-    await setDoc(
-      doc(db, "users", user.uid),
-      { lastLoginAt: Timestamp.now() },
-      { merge: true }
-    );
-    return userData;
-  }
-
-  // New user - create user document
-  // Split display name into first and last name
-  const nameParts = user.displayName?.split(" ") || ["", ""];
-  const firstName = nameParts[0] || "User";
-  const lastName = nameParts.slice(1).join(" ") || "";
-
-  const appUser: AppUser = {
-    uid: user.uid,
-    email: user.email!,
-    firstName,
-    lastName,
-    role: "customer",
-    demographics: {
-      age: null,
-      location: null,
-    },
-    passwordHash: "", // No password for OAuth users
-    salt: "", // No salt for OAuth users
-    emailVerified: true, // SSO users are inherently verified
-    verificationToken: null,
-    createdAt: Timestamp.now(),
-    lastLoginAt: Timestamp.now(),
-  };
-
-  await setDoc(doc(db, "users", user.uid), appUser);
-  return appUser;
 }
 
 export function onAuthChange(callback: (user: User | null) => void) {
