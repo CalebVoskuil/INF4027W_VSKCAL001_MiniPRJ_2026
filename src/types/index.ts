@@ -54,8 +54,6 @@ export interface AppUser {
   demographics: UserDemographics;
   passwordHash: string;
   salt: string;
-  emailVerified: boolean;
-  verificationToken: string | null;
   createdAt: Timestamp | Date;
   lastLoginAt: Timestamp | Date;
 }
