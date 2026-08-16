@@ -46,6 +46,13 @@ service cloud.firestore {
         (resource.data.userId == request.auth.uid ||
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
     }
+
+    // Student-discount verification sessions are written only by trusted
+    // Next.js server routes through Firebase Admin. Browsers must never read
+    // checkout capabilities, vendor results, or webhook correlation data.
+    match /studentDiscountSessions/{checkoutId} {
+      allow read, write: if false;
+    }
     
     // Wishlists: users can read/write own
     match /wishlists/{userId} {

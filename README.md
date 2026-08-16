@@ -29,6 +29,7 @@ An AI-powered e-commerce platform for mobile phones built with Next.js, Firebase
 ### Customer Features
 - Email/password authentication with password strength indicator
 - Checkout with simulated payments (Card, PayPal, Cash on Delivery)
+- UNIFY student verification at checkout with a QR code, wallet consent, and an automatic 10% discount
 - Order history with status tracking
 - Wishlist synced to Firestore
 - Profile management with demographics
@@ -65,7 +66,7 @@ cp .env.example .env.local
 
 ### Environment Variables
 
-Edit `.env.local` with your Firebase and OpenAI credentials:
+Edit `.env.local` with your Firebase, OpenAI, and server-only UNIFY credentials:
 
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
@@ -76,7 +77,59 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
 OPENAI_API_KEY=your_openai_key
+
+FIREBASE_ADMIN_PROJECT_ID=your_project_id
+FIREBASE_ADMIN_CLIENT_EMAIL=firebase-adminsdk@example.iam.gserviceaccount.com
+FIREBASE_ADMIN_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+
+UNIFY_ADMIN_PORTAL_BASE_URL=https://voskuils.com
+UNIFY_VENDOR_API_KEY=unify_vk_replace_me
+UNIFY_VENDOR_WEBHOOK_SECRET=replace_with_webhook_secret
 ```
+
+The Firebase Admin and UNIFY values are server-only. Never prefix them with
+`NEXT_PUBLIC_` or expose them from a browser response.
+
+For production, download a Firebase Admin SDK service-account JSON from
+**Firebase Console → Project settings → Service accounts → Generate new private key**.
+Keep the JSON outside the repository, then configure the linked Vercel project
+without printing or copying the private key:
+
+```powershell
+.\scripts\configure-firebase-admin-vercel.ps1 `
+  -ServiceAccountPath "$env:USERPROFILE\Downloads\your-service-account.json"
+```
+
+The script validates the file type and required fields, writes the three
+server-only values directly to Vercel Production, and never stores them in the
+repository. Redeploy after it succeeds.
+
+### UNIFY Student Discount
+
+TechNest integrates through the Admin Portal's vendor API rather than calling
+the Credo Agent directly. At checkout, TechNest creates a short-lived,
+checkout-bound verification session and renders its URL as a QR code. The
+student scans it with the UNIFY Wallet, reviews the requested values, and
+chooses whether to present the credential. The Agent Service makes the trust
+decision and the Admin Portal returns only the minimal checkout result.
+
+Completion reaches TechNest through a signed webhook. The checkout also polls
+through its own server route so a delayed or missed callback cannot leave the
+screen stuck. `APPROVED` applies 10% to the exact cart snapshot; changing a
+product, quantity, or displayed unit price requires a new verification.
+
+To configure a vendor integration:
+
+1. Create and approve the TechNest vendor in the UNIFY Admin Portal.
+2. Ensure its default branch has an active Agent service point.
+3. Create a checkout API key on the vendor Integrations page.
+4. Configure `https://<technest-domain>/api/webhooks/unify/verification` as the webhook URL.
+5. Save the one-time webhook signing secret and API key in the TechNest server environment.
+
+The current store uses simulated payments and writes orders from the browser.
+The verification decision is backend-authoritative, but production-grade
+discount enforcement would also move product pricing and order creation to a
+trusted server transaction.
 
 ### Firebase Setup
 
@@ -110,6 +163,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000)
 
+### Validation
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
 ## Project Structure
 
 ```
@@ -120,13 +181,15 @@ src/
 │   ├── cart/, checkout/, search/
 │   ├── profile/, orders/, wishlist/
 │   ├── admin/dashboard, products, categories, orders, reports
-│   └── api/ai-search/text, image, recommendations
+│   └── api/ai-search, student-discount, webhooks/unify
 ├── components/
 │   ├── ui/ (shadcn components)
 │   ├── layout/ (TopBar, Navbar, NavLinks, Footer, AuthProvider, AuthGuard)
+│   ├── checkout/ (student verification and discount state)
 │   └── products/ (ProductCard, ProductGrid, FilterSidebar, QuickViewModal)
 ├── lib/
 │   ├── firebase/ (config, auth, firestore, storage)
+│   ├── studentDiscount/ (UNIFY client, session persistence, validation)
 │   └── openai/ (client)
 ├── store/ (cartStore, authStore, wishlistStore)
 ├── types/ (TypeScript interfaces)
